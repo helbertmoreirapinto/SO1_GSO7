@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <unistd.h>
 
-int main(void) {
+int main() {
 	int i = 6;
 
 	pid_t pid = fork();
