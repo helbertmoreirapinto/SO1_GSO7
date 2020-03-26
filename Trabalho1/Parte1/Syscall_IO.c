@@ -2,10 +2,10 @@
  ============================================================================
  Description  : This is an example program that uses I/O in both standard and file input.
  Syscalls uses:
- open()  - 
- creat() - 
- write() - 
- read()  - 
+ open() - tries to open a file on disk.
+ creat()- create a file on the disk.
+ write()- write a fixed number of bytes to the output defined in the parameter.
+ read() - read a fixed number of bytes from the input defined in the parameter.
  ============================================================================
  */
  
@@ -20,7 +20,7 @@
 
 /*------------------------------ MAIN -------------------------------*/
 int main() {
-	
+
 	/* String pool */
 	char name_file[] = "fileExampl.out";
 	char msg_file[] = "text for example abc123\n\0";
