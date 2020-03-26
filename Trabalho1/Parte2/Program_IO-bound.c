@@ -19,10 +19,11 @@ int main(void) {
         while (fread(string, sizeof(char), 32, arqRead))
         {
             fwrite(string, sizeof(char), 32, arqWrite);
+            fflush(arqWrite);
         }
     }
-    free(arqRead);
-    free(arqWrite);
+    fclose(arqRead);
+    fclose(arqWrite);
     printf("SUCCESS!\n");
 	return EXIT_SUCCESS;
 }
