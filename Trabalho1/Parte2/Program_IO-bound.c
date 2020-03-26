@@ -12,6 +12,17 @@
 #include <stdlib.h>
 
 int main(void) {
-	puts("!!!Hello World!!!"); /* prints !!!Hello World!!! */
+    char string[32];
+	FILE *arqRead = fopen("input.bin", "rb");
+    FILE *arqWrite = fopen("output.bin", "wb");
+    if(arqRead){
+        while (fread(string, sizeof(char), 32, arqRead))
+        {
+            fwrite(string, sizeof(char), 32, arqWrite);
+        }
+    }
+    free(arqRead);
+    free(arqWrite);
+    printf("SUCCESS!\n");
 	return EXIT_SUCCESS;
 }
