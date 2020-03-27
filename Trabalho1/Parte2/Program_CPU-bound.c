@@ -1,5 +1,3 @@
-#include <stdio.h>
-#include <stdlib.h>
 #include <stdbool.h>
 
 int main() {
@@ -12,12 +10,9 @@ int main() {
 		for (int j = 2; j < i; j++) {
 			if (!(i % j)) {
 				prime_numb = false;
-		//		break;
+				break;
 			}
 		}
-
-		//if (prime_numb)
-		//	printf("%d\n", i);
 	}
-	return EXIT_SUCCESS;
+	return 0;
 }
