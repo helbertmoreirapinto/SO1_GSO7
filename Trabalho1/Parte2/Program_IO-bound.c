@@ -1,31 +1,19 @@
-/*
- ============================================================================
- Name        : Program_IO-bound.c
- Author      : Helbert M Pinto
- Version     :
- Copyright   : 
- Description : Hello World in C, Ansi-style
- ============================================================================
- */
-
 #include <stdio.h>
-#include <stdlib.h>
 
-int main(void)
-{
+int main(){
     char ch;
-    FILE *arq;
-
-    arq = fopen("poema.txt", "r");
+    FILE *arq = fopen("poema.txt", "r");
+    
     if(arq == NULL)
-        printf("Erro, nao foi possivel abrir o arquivo\n");
+        printf("Error! can't open file\n");
     else
         while( (ch=fgetc(arq))!= EOF )
-    putchar(ch);
+            putchar(ch);
 
     fclose(arq);
 
-    printf("\n\nFim da execucao!\n");
+    printf("\n\n");
+    printf("Sucess!\n");
 
     return 0;
 }

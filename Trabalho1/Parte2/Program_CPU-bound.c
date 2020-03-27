@@ -13,6 +13,7 @@ int main() {
 				break;
 			}
 		}
+		//if(prime_numb) printf("%d ", prime_numb);
 	}
 	return 0;
 }
