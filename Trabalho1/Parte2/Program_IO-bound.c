@@ -9,33 +9,23 @@
  */
 
 #include <stdio.h>
+#include <stdlib.h>
 
-int main() {
-    char buffer[32];
-    int n_buffer = 0;
-	FILE *arqRead;
-    FILE *arqWrite;
+int main(void)
+{
+    char ch;
+    FILE *arq;
 
-    arqWrite = fopen("output.bin", "wb");
-    fclose(arqWrite);
+    arq = fopen("poema.txt", "r");
+    if(arq == NULL)
+        printf("Erro, nao foi possivel abrir o arquivo\n");
+    else
+        while( (ch=fgetc(arq))!= EOF )
+    putchar(ch);
 
-    while(1){
-        arqRead = fopen("input.bin", "rb");
-        arqWrite = fopen("output.bin", "ab");
-        
-        if(!arqWrite || !arqRead)
-            break;
-        
-        fseek(arqRead, 32 * n_buffer++, SEEK_SET);
-        if(fread(buffer, sizeof(char), 32, arqRead)){
-            fwrite(buffer, sizeof(char), 32, arqWrite);
-            fflush(arqWrite);
-        }else{
-            break;
-        }
-        fclose(arqRead);
-        fclose(arqWrite);
-    }
-    printf("SUCCESS!\n");
-	return 0;
+    fclose(arq);
+
+    printf("\n\nFim da execucao!\n");
+
+    return 0;
 }
