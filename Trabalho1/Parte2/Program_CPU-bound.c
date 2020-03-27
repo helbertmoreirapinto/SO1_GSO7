@@ -3,6 +3,7 @@
 int main() {
 	int range_start = 5000;
 	int range_end   = 30000;
+	int prime_count = 0;
 	bool prime_numb;
 
 	for (int i = range_start; i < range_end; i++) {
@@ -13,7 +14,8 @@ int main() {
 				break;
 			}
 		}
-		//if(prime_numb) printf("%d ", prime_numb);
+		if(prime_numb) prime_count++;
 	}
+	printf("Prime count = %d", prime_count);
 	return 0;
 }
