@@ -9,21 +9,30 @@
  */
 
 #include <stdio.h>
-#include <stdlib.h>
 
-int main(void) {
-    char string[32];
-	FILE *arqRead = fopen("input.bin", "rb");
-    FILE *arqWrite = fopen("output.bin", "wb");
-    if(arqRead){
-        while (fread(string, sizeof(char), 32, arqRead))
-        {
-            fwrite(string, sizeof(char), 32, arqWrite);
+int main() {
+    char buffer[32];
+    int n_buffer = 0;
+	FILE *arqRead;
+    FILE *arqWrite;
+
+    while(1){
+        arqRead = fopen("input.bin", "rb");
+        arqWrite = fopen("output.bin", "ab");
+        
+        if(!arqWrite || !arqRead)
+            break;
+        
+        fseek(arqRead, 32 * n_buffer++, SEEK_SET);
+        if(fread(buffer, sizeof(char), 32, arqRead)){
+            fwrite(buffer, sizeof(char), 32, arqWrite);
             fflush(arqWrite);
+        }else{
+            break;
         }
+        fclose(arqRead);
+        fclose(arqWrite);
     }
-    fclose(arqRead);
-    fclose(arqWrite);
     printf("SUCCESS!\n");
-	return EXIT_SUCCESS;
+	return 0;
 }
