@@ -16,6 +16,9 @@ int main() {
 	FILE *arqRead;
     FILE *arqWrite;
 
+    arqWrite = fopen("output.bin", "wb");
+    fclose(arqWrite);
+
     while(1){
         arqRead = fopen("input.bin", "rb");
         arqWrite = fopen("output.bin", "ab");
