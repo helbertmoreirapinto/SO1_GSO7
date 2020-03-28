@@ -16,6 +16,7 @@
 #include <unistd.h> 
 #include <sys/ipc.h> 
 #include <sys/shm.h>
+#include <sys/wait.h> 
 
 int main() {
     int arr_size = 15;
@@ -55,9 +56,12 @@ int main() {
         printf("Shared array:\n");
         for(int i = 0; i < arr_size; i++)
             printf("%02d ", arr2[i]);
-        printf("\n");
-        
+        printf("\n");   
     }
+    wait(NULL);
+
+    brk(arr1);
+    shmdt(arr2);
 
     return 0;
 }
