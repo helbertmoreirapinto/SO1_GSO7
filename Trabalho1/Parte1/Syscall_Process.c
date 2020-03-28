@@ -11,7 +11,9 @@
  */
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <unistd.h>
+#include <sys/wait.h> 
 
 int main() {
 	char* args[] = {"", "10", NULL};
@@ -47,7 +49,7 @@ int main() {
 	}
 
 	printf("Processo ID[%d] vai finalizar\n\n", atual_process);
-	wait();
+	wait(NULL);
 	
 	return 0;
 }
