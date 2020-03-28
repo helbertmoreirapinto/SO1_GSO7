@@ -1,19 +1,23 @@
 #include <stdio.h>
+#include <stdlib.h>
 
-int main(){
+int main(void)
+{
     char ch;
-    FILE *arq = fopen("poema.txt", "r");
+    FILE *arqR = fopen("poema.txt", "r");
     
-    if(arq == NULL)
-        printf("Error! can't open file\n");
-    else
-        while( (ch=fgetc(arq))!= EOF )
-            putchar(ch);
+    if(arqR == NULL){
+        printf("Erro, nao foi possivel abrir o arquivo\n");
+    } else {
+        FILE *arqW = fopen("out.txt", "w");
+        while( (ch=fgetc(arqR))!= EOF )
+            fputc(ch, arqW);
+        fclose(arqW);
+    }
 
-    fclose(arq);
+    fclose(arqR);
 
-    printf("\n\n");
-    printf("Sucess!\n");
+    printf("\n\nFim da execucao!\n");
 
     return 0;
 }
