@@ -4,18 +4,16 @@
 int main(void)
 {
     char ch;
-    FILE *arqR = fopen("poema.txt", "r");
+    FILE *arq = fopen("poema.txt", "r");
     
-    if(arqR == NULL){
+    if(arq == NULL){
         printf("Erro, nao foi possivel abrir o arquivo\n");
     } else {
-        FILE *arqW = fopen("out.txt", "w");
-        while( (ch=fgetc(arqR))!= EOF )
-            fputc(ch, arqW);
-        fclose(arqW);
+        while( (ch=fgetc(arq))!= EOF )
+            putchar(ch);
     }
 
-    fclose(arqR);
+    fclose(arq);
 
     printf("\n\nFim da execucao!\n");
 
