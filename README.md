@@ -6,7 +6,7 @@ Trabalhos da disciplina de Sistemas Operacionais 1
 
 <h2>Parte 1</h2>	
 <h3>Syscalls de Processo</h3>
-<p>A aplicação desenvolvida inicialmente divide o processo numa bifurcação, de modo que chamaremos de processo core (ou processo pai) o processo cujo ID é inalterado e processo ramo (ou processo filho) o processo cujo retorno da chamada se sistema FORK tenha valor zero.
+<p>A aplicação desenvolvida inicialmente divide o processo numa bifurcação, de modo que chamaremos de processo core (ou processo pai) o processo cujo ID é inalterado e processo ramo (ou processo filho) o processo cujo retorno da chamada de sistema FORK tenha valor zero.
 Exibimos seus respectivos ID's e apos cada um aguardar(SLEEP) por um tempo diferente, iniciam programas(SISTEM) já compilados distintos. A chamada de sistema WAIT é utilizada para sincronizar as threads.</p>
 <h4>FORK()</h4>Inicia a bifurcação do processo.
 <h4>SLEEP()</h4>Faz a thread de execução 'dormir' por um tempo determinado.
