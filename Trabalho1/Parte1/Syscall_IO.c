@@ -26,7 +26,7 @@ int main() {
 	char msg_file[] = "text for example abc123\n\0";
 	
 	char msg_err1[] = "File not found\n\0";
-	char msg_err2[] = "Trying create file\n\0";
+	char msg_err2[] = "Trying to create file\n\0";
 	char msg_err3[] = "Failed to create file\n\0";
 	char msg_err4[] = "Failed to open file\n\0";
 
