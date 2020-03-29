@@ -4,7 +4,7 @@
                 with and without shared memory.
  Syscalls uses:
  brk() -    Allocates memory for the process.
- ftok() -   Return a unique key.
+ ftok() -   Returns a unique key.
  shmget() - Returns an identifier for the shared memory segment.
  shmat() -  Connects to the memory segment.
  ============================================================================
