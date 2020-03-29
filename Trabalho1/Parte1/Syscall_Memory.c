@@ -1,7 +1,7 @@
 /*
  ============================================================================
- Description  : This example shows the difference in the use of arrays with
-                and without shared memory.
+ Description  : This example shows the difference betwenn the use of arrays 
+                with and without shared memory.
  Syscalls uses:
  brk() -    Allocates memory for the process.
  ftok() -   Return a unique key.
