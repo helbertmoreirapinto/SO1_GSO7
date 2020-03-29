@@ -6,20 +6,20 @@ Trabalhos da disciplina de Sistemas Operacionais 1
 
 <h2>Parte 1</h2>	
 <h3>Syscalls de Processo</h3>
-<p>A aplicação desenvolvida inicialmente divide o processo numa bifurcação, de modo que chamaremos de processo core (ou processo pai) o processo cujo ID é inalterado e processo ramo (ou processo filho) o processo cujo retorno da chamada de sistema FORK tenha valor zero.
-Exibimos seus respectivos ID's e apos cada um aguardar(SLEEP) por um tempo diferente, iniciam programas(SISTEM) já compilados distintos. A chamada de sistema WAIT é utilizada para sincronizar as threads.</p>
+<p>A aplicação desenvolvida inicialmente divide o processo em uma bifurcação, de modo que chamaremos de processo core (ou processo pai) o processo cujo ID é inalterado e processo ramo (ou processo filho) o processo cujo retorno da chamada de sistema FORK tenha valor zero.
+Exibimos seus respectivos ID's e após cada um aguardar (SLEEP) por um tempo diferente, iniciam programas (SISTEM) já compilados distintos. A chamada de sistema WAIT é utilizada para sincronizar as threads.</p>
 <h4>FORK()</h4>Inicia a bifurcação do processo.
 <h4>SLEEP()</h4>Faz a thread de execução 'dormir' por um tempo determinado.
 <h4>SYSTEM()</h4>Realiza durante a aplicação um comando do terminal do sistema.
 <h4>WAIT()</h4>Aguarda a execução das outras threads.
 
 <h3>Syscalls de Memoria</h3>
-<p>A ideia da aplicação é mostrar as diferenças entre a utilização de memoria compartilhas e memoria nao compartilhada.
-Para simular o multiprocesso e para realizar os testes, utilizamos uma bifurcação no processo, de modo que uma parte do processo (ao qual chamaremos de processo 1) apenas escreve em ambas memorias (compartilhada e nao-compartilhada) e a outra parte da bifurcação do processo (ao qual chamaremos de processo 2) apenas lê e exibe os conteudos das memorias. Podemos notar então a diferença pois as modificações causadas pelo processo 1 na memoria nao-compartlhada nao pode ser vista no processo 2, diferente do que acontece com a memoria compartilhada.</p>
-<h4>BRK()</h4>Aloca memoria para o processo. Similar ao comando calloc em C.
-<h4>FTOK()</h4>Retorna uma chave unica, para a seleção do local onde sera criada a memoria. (segurança)
-<h4>SHMGET()</h4>Retorna um identificador(tambem conhecido por descritor) para o inicio da memoria compartilhada.
-<h4>SHMAT()</h4>Torna o segmento de memoria utilizavel. (Anexa a memoria ao processo)
+<p>A ideia da aplicação é mostrar as diferenças entre a utilização de memória compartilhada e memória não compartilhada.
+Para simular o multiprocesso e para realizar os testes, utilizamos uma bifurcação no processo, de modo que uma parte do processo (ao qual chamaremos de processo 1) apenas escreve em ambas memorias (compartilhada e nao-compartilhada) e a outra parte da bifurcação do processo (ao qual chamaremos de processo 2) apenas lê e exibe os conteudos das memórias. Podemos notar então a diferença pois as modificações causadas pelo processo 1 na memória não compartlhada não pode ser vista no processo 2, diferente do que acontece com a memória compartilhada.</p>
+<h4>BRK()</h4>Aloca memória para o processo. Similar ao comando calloc em C.
+<h4>FTOK()</h4>Retorna uma chave única, para a seleção do local onde sera criada a memoria. (segurança)
+<h4>SHMGET()</h4>Retorna um identificador(tambem conhecido por descritor) para o início da memória compartilhada.
+<h4>SHMAT()</h4>Torna o segmento de memória utilizavel. (Anexa a memoria ao processo)
 
 <h3>Syscalls de E/S</h3>
 <p>A aplicação tenta abrir um arquivo inicialmente inexiste no disco (caso exista a aplicação vai sobreescrever seu conteudo), cria o arquivo e escre uma mensagem nele. Fecha o arquivo. Apos isso abre o arquivo novamente, recupera a informação guardada no arquivo e exibe em tela.</p>
