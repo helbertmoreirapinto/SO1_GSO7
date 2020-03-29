@@ -15,7 +15,7 @@ Exibimos seus respectivos ID's e após cada um aguardar (SLEEP) por um tempo dif
 
 <h3>Syscalls de Memoria</h3>
 <p>A ideia da aplicação é mostrar as diferenças entre a utilização de memória compartilhada e memória não compartilhada.
-Para simular o multiprocesso e para realizar os testes, utilizamos uma bifurcação no processo, de modo que uma parte do processo (ao qual chamaremos de processo 1) apenas escreve em ambas as memórias (compartilhada e não compartilhada) e a outra parte da bifurcação do processo (ao qual chamaremos de processo 2) apenas lê e exibe os conteúdos das memórias. Podemos notar então a diferença pois as modificações causadas pelo processo 1 na memória não compartlihada não podem ser vistas no processo 2, diferente do que acontece com a memória compartilhada.</p>
+Para simular o multiprocesso e para realizar os testes, utilizamos uma bifurcação no processo, de modo que uma parte do processo (ao qual chamaremos de processo 1) apenas escreve em ambas as memórias (compartilhada e não compartilhada) e a outra parte da bifurcação do processo (ao qual chamaremos de processo 2) apenas lê e exibe os conteúdos das memórias. Podemos notar então a diferença pois as modificações causadas pelo processo 1 na memória não compartilhada não podem ser vistas no processo 2, diferente do que acontece com a memória compartilhada.</p>
 <h4>BRK()</h4>Aloca memória para o processo. Similar ao comando calloc em C.
 <h4>FTOK()</h4>Retorna uma chave única, para a seleção do local onde será criada a memória. (segurança)
 <h4>SHMGET()</h4>Retorna um identificador (também conhecido por descritor) para o início da memória compartilhada.
