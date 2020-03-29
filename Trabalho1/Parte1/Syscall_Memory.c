@@ -22,15 +22,17 @@ int main() {
     int arr_size = 15;
     
     //ARRAY 1 - Unshared memory
-    void* ptr_void1 = sbrk(0);
+    void* ptr_void1 = sbrk(0); //ptr_void get the address of the top of the data segment
     if(ptr_void1 == NULL){
         printf("Error alocate memory [arr1]\n");
         return 1;
     }
     int* arr1 = (int*) ptr_void1;
+    //Allocates memory for the process acording arr_size
     brk(arr1 + arr_size);
     
     //ARRAY 2 - Shared memory
+    //receives a unique key to select the location where the memory will be created
     key_t key = ftok("shmkey", 65);
     int shmid = shmget(key, arr_size * sizeof(int), 0666 | IPC_CREAT);
 
@@ -38,7 +40,8 @@ int main() {
         printf("Error alocate memory [arr2]\n");
         return 1;
     }
-    
+ 
+    //Crate a child process identical to the parent
     int pid = fork();
 
     int* arr2 = (int*) shmat(shmid, (void*)0,0); 
