@@ -22,18 +22,18 @@ Para simular o multiprocesso e para realizar os testes, utilizamos uma bifurcaç
 <h4>SHMAT()</h4>Torna o segmento de memória utilizável. (Anexa a memória ao processo)
 
 <h3>Syscalls de E/S</h3>
-<p>A aplicação tenta abrir um arquivo inicialmente inexiste no disco (caso exista a aplicação vai sobreescrever seu conteudo), cria o arquivo e escre uma mensagem nele. Fecha o arquivo. Apos isso abre o arquivo novamente, recupera a informação guardada no arquivo e exibe em tela.</p>
+<p>A aplicação tenta abrir um arquivo inicialmente inexiste no disco (caso exista a aplicação vai sobreescrever seu conteúdo), cria o arquivo e escreve uma mensagem nele. Fecha o arquivo. Em seguida, abre o arquivo novamente, recupera a informação guardada no arquivo e exibe em tela.</p>
 <h4>OPEN()</h4>Realiza a abertura de um arquivo em disco.
 <h4>CREAT()</h4>Cria um arquivo no disco.
-<h4>WRITE()</h4>Escreve um numero pré definido de bytes no arquivo (ou saida padrão).
-<h4>READ()</h4>Lê um numero pre-definido de bytes do arquivo (ou entrada padrão).
+<h4>WRITE()</h4>Escreve um número pré definido de bytes no arquivo (ou saida padrão).
+<h4>READ()</h4>Lê um número pre-definido de bytes do arquivo (ou entrada padrão).
 
 <h2>Parte 2</h2>
 <h3>CPU-bound</h3>
-<p>Para esta parte, desenvolvemos uma aplicação que verifica todos os numeros se são primos ou não no intervalo de 5000 a 30000. Apesar do intervalo ser fixo, quanto mais aumentamos os valores, notamos um estresse maior da CPU.</p>
+<p>Para esta parte, desenvolvemos uma aplicação que verifica todos os números que são primos ou não no intervalo de 5000 a 30000. Apesar do intervalo ser fixo, quanto mais aumentamos os valores, notamos um estresse maior da CPU.</p>
 
 <h3>I/O-bound</h3>
-<p>Para o IO-bound desenvolvemos uma aplicação que le, caracter por caracter, o arquivo de entrada arquivo e o escreve na saida padrao. Como no exemplo anterior, quanto maior o tamanho do arquivo (em quantidade de caracteres), notamos um estresse maior do I/O.</p>
+<p>Para o IO-bound desenvolvemos uma aplicação que lê, caracter por caracter, o arquivo de entrada arquivo e o escreve na saída padrão. Como no exemplo anterior, quanto maior o tamanho do arquivo (em quantidade de caracteres), notamos um estresse maior do I/O.</p>
 <br/>
 
 <h1>TRABALHO II</h1>
