@@ -2,7 +2,7 @@ SO1_GSO7
 Trabalhos da disciplina de Sistemas Operacionais 1
 
 <h1>TRABALHO I</h1>
-<a href = "https://www.google.com">Link video trabalho 1</a>
+<a href = "https://youtu.be/nbiwV9bjUtU">Link video trabalho 1</a>
 
 <h2>Parte 1</h2>	
 <h3>Syscalls de Processo</h3>
