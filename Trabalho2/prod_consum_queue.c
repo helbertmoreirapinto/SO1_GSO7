@@ -1,12 +1,13 @@
 //----------------------------------IMPORTS---------------------------------//
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 #include <pthread.h>
 #include <unistd.h>
 
 //----------------------------------DEFINES---------------------------------//
-#define MAX_ITEMS 15
-#define MAX_BUFFER 3
+#define MAX_ITEMS 50
+#define MAX_BUFFER 10
 #define MAX_ITEM_VALUE 100
 #define MILLISEC 1000
 
@@ -22,7 +23,8 @@ int random_item();
 pthread_cond_t cond_buffer_empty, cond_buffer_full;
 pthread_mutex_t atomic_process_lock;
 int buffer[MAX_BUFFER];
-int idx_buffer; //semaphore
+int idx_prod, idx_cons;
+bool can_prod, can_cons;
 int produced_items, consumed_items;
 
 //-----------------------------------MAIN-----------------------------------//
@@ -33,6 +35,11 @@ int main(){
     //Threads
     pthread_t th_prod;
     pthread_t th_cons;
+
+    //init
+    idx_prod = idx_cons = produced_items = consumed_items = 0;
+    can_prod = true;
+    can_cons = false;
 
     //Associate functions threads 
     if (pthread_create(&th_prod, 0, (void*) func_producer, (void*) 0)) { 
@@ -62,7 +69,7 @@ void* func_producer(void){
         pthread_mutex_lock(&atomic_process_lock);
 
         //While buffer is full, to make to sleep this thread until wait signal for wake
-        while (idx_buffer == MAX_BUFFER)
+        while (!can_prod)
             pthread_cond_wait(&cond_buffer_empty, &atomic_process_lock);
         produce_item(item);
 
@@ -84,7 +91,7 @@ void* func_consumer(void){
         pthread_mutex_lock(&atomic_process_lock);
         
         //While buffer is empty, to make to sleep this thread until wait signal for wake
-        while (!idx_buffer)
+        while (!can_cons)
             pthread_cond_wait(&cond_buffer_full, &atomic_process_lock);
         item = consume_item();
 
@@ -100,15 +107,24 @@ void* func_consumer(void){
 
 void produce_item(int item){
     produced_items++;
-    buffer[idx_buffer++] = item;
+    buffer[idx_prod] = item;
+    printf("Produzidos: [%d] = %d. Idx_Prod -> %d\n", produced_items, item, idx_prod);
 
-    printf("Produzidos: [%d] = %d. Buffer -> %d\n", produced_items, item, (idx_buffer-1));
+    idx_prod = (idx_prod+1 < MAX_BUFFER) ? idx_prod+1 : 0;
+    can_prod = !(idx_prod == idx_cons);
+    can_cons = true;
 }
 
 int consume_item(){
+    int item;
     consumed_items++;
-    printf("Consumidos: [%d] = %d. Buffer -> %d\n", consumed_items, buffer[idx_buffer-1], idx_buffer-1);
-    return buffer[--idx_buffer];
+    item = buffer[idx_cons];
+    printf("Consumidos: [%d] = %d. Idx_Cons -> %d\n", consumed_items, buffer[idx_cons], idx_cons);
+
+    idx_cons = (idx_cons+1 < MAX_BUFFER) ? idx_cons+1 : 0;
+    can_cons = !(idx_cons == idx_prod);
+    can_prod = true;
+    return item;
 }
 
 void process_item(int item){
