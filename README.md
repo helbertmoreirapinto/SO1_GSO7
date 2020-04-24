@@ -48,18 +48,18 @@ gcc example.c -o example -lpthread <br/>
 	Imagine a seguinte situação:
 	<ul>
 		<li>Produtor insere na posição 0 do buffer o elemento X.</li>
-		<li>Consumidor utiliza o elemento X da posicao 0 do buffer liberando a posição para que outro elemento seja inserido.</li>
-		<li>Como as threads não são sincronizadas, de modo paralelo a ação anterior o produtor insere na posição 1 do buffer o elemento Y.</li>
+		<li>Consumidor utiliza o elemento X da posição 0 do buffer liberando a posição para que outro elemento seja inserido.</li>
+		<li>Como as threads não são sincronizadas, de modo paralelo à ação anterior, o produtor insere na posição 1 do buffer o elemento Y.</li>
 		<li>Note que temos dois problemas até aqui:</li>
 			<ul>
 				<li>Produtor não sabe que o elemento X da posição 0 do buffer foi consumido (e caso for inserir novo elemento, irá inserir na posição 2 do buffer).</li>
 				<li>Consumidor não sabe que elemento Y foi inserido na posição 1 do buffer (e caso for remover algum elemento será na posição 0 do buffer).</li>
 		</ul>
 	</ul>
-	Para resolver este problema devemos sincronizar as threads, de modo que o produtor e consumidor não percam dados por sobreposição e nem tentem utilizar lixo. Para a sincronização ultilizaremos uma das proposta de soluções de exclusão mutua, os semáforos. <br/>
-	Esta solução consiste em utilizar uma valiavel (interira ou boleana) para determinar se deve produzir ou se deve consumir. Note que as operações de manipulação a esta variavel deve ser de modo não-paralelo, pois senão voltariamos ao problema inicial. Estas operações onde apenas uma thread por vez pode realizar uma manipulação as variaveis (semaforo), é chamada de operações atomicas. <br/>
-	Então a solução proposta é a seguinte: quando o produtor inserir algum elemento no buffer, utilizando de uma operação atomica ele atualiza a posição do semaforo. De modo similar, quando o consumidor for remover um elemento do buffer, utilizar uma operação atomica e atualiza o semaforo. <br/>
-	Note que desta forma torna-se possivel saber se o buffer esta vazio (e portanto não se pode consumir) ou cheio (não sendo possivel produzir mais). <br/>
+	Para resolver este problema devemos sincronizar as threads, de modo que o produtor e consumidor não percam dados por sobreposição e nem tentem utilizar lixo. Para a sincronização ultilizaremos uma das propostas de soluções de exclusão mutua, os semáforos. <br/>
+	Esta solução consiste em utilizar uma variável (interira ou boleana) para determinar se deve produzir ou se deve consumir. Note que as operações de manipulação desta variável devem ser de modo não-paralelo, caso contrário voltariamos ao problema inicial. Estas operações onde apenas uma thread por vez pode realizar uma manipulação as variaveis (semáforo), são chamadas de operações atômicas. <br/>
+	Então a solução proposta é a seguinte: quando o produtor inserir algum elemento no buffer, utilizando de uma operação atômica, ele atualiza a posição do semáforo. De modo similar, quando o consumidor for remover um elemento do buffer, utilizar uma operação atômica e atualiza o semáforo. <br/>
+	Note que desta forma torna-se possível saber se o buffer está vazio (e portanto não se pode consumir) ou cheio (não sendo possível produzir mais). <br/>
 </p>
 <br/>
 
