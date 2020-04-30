@@ -6,7 +6,7 @@
 #include <unistd.h>
 
 //----------------------------------DEFINES---------------------------------//
-#define MAX_ITEMS 50
+#define MAX_ITEMS 30
 #define MAX_BUFFER 10
 #define MAX_ITEM_VALUE 100
 #define MILLISEC 1000
@@ -63,7 +63,7 @@ void* func_producer(void){
     int item;
     while(produced_items < MAX_ITEMS){
         item = random_item();
-        usleep(100 * MILLISEC);
+        //usleep(100 * MILLISEC);
 
         //------BLOCK CRITICAL REGION------//
         pthread_mutex_lock(&atomic_process_lock);
@@ -85,7 +85,7 @@ void* func_producer(void){
 void* func_consumer(void){
     int item;
     while(consumed_items < MAX_ITEMS){
-        usleep(500 * MILLISEC);
+        //usleep(500 * MILLISEC);
 
         //------BLOCK CRITICAL REGION------//
         pthread_mutex_lock(&atomic_process_lock);
@@ -108,7 +108,7 @@ void* func_consumer(void){
 void produce_item(int item){
     produced_items++;
     buffer[idx_prod] = item;
-    printf("Produzidos: [%d] = %d. Idx_Prod -> %d\n", produced_items, item, idx_prod);
+    printf("Prod: [%d] = %d. Idx_Prod -> %d\n", produced_items, item, idx_prod);
 
     idx_prod = (idx_prod+1 < MAX_BUFFER) ? idx_prod+1 : 0;
     can_prod = !(idx_prod == idx_cons);
@@ -119,7 +119,7 @@ int consume_item(){
     int item;
     consumed_items++;
     item = buffer[idx_cons];
-    printf("Consumidos: [%d] = %d. Idx_Cons -> %d\n", consumed_items, buffer[idx_cons], idx_cons);
+    printf(" Cons: [%d] = %d. Idx_Cons -> %d\n", consumed_items, buffer[idx_cons], idx_cons);
 
     idx_cons = (idx_cons+1 < MAX_BUFFER) ? idx_cons+1 : 0;
     can_cons = !(idx_cons == idx_prod);
@@ -129,7 +129,7 @@ int consume_item(){
 
 void process_item(int item){
     static int processed_item = 0; //static variable
-    printf("Processados: [%d] = %d\n", ++processed_item, item);
+    printf("Utilizacao do item: [%d] = %d\n", ++processed_item, item);
 }
 
 int random_item(){
