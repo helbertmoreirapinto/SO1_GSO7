@@ -85,7 +85,7 @@ void* func_producer(void){
 void* func_consumer(void){
     int item;
     while(consumed_items < MAX_ITEMS){
-        usleep(200 * MILLISEC);
+        usleep(250 * MILLISEC);
 
         //------BLOCK CRITICAL REGION------//
         pthread_mutex_lock(&atomic_process_lock);
