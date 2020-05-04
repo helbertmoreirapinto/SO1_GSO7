@@ -37,7 +37,7 @@ Para simular o multiprocesso e para realizar os testes, utilizamos uma bifurcaç
 <br/>
 
 <h1>TRABALHO II</h1>
-<a href = "https://www.google.com">Link video trabalho 2</a>
+<a href = "https://www.youtube.com/watch?v=raLr1-DT8aU&t=2s">Link video trabalho 2</a>
 <p>
 Para compilar:
 gcc example.c -o example -lpthread <br/>
