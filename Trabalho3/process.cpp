@@ -8,11 +8,20 @@ using namespace std;
 #define SEC_MEMORY 2048 /*Kbytes*/
 
 
+// Virtual memory tem um vector de processos
+// As memorias tem vector de paginas
+// Criar herança de memoria
+// Criar memoria fisica e secundaria
+// Virtual memory: criar um find de processo
+// Process: cmd
+// Destrutores
+
+
 class Disc_Page{
     public:
         uint16_t ID;
         uint16_t size;
-        Disc_Page* reference;
+        bool allocated = false;
 
     Disc_Page(uint16_t size, uint16_t ID){
         this->ID = ID;
@@ -32,7 +41,6 @@ class Process{
         uint16_t size;
         uint16_t len_pages;
         vector<Disc_Page> pages;
-        bool allocated = false; // process at principal memory
     
     Process(uint16_t ID, uint16_t size, uint16_t size_page){
         this->ID = ID;
@@ -41,13 +49,20 @@ class Process{
         for(int i = 0; i < len_pages; i++){
             Disc_Page page(size_page, i);
             pages.push_back(page);
+
+            // memoria princial ou secundaria tem que referenciar essas paginas
         }
 
     }
 
-    bool read(uint16_t adrs){
-        return this->allocated;
+    bool cmd(uint16_t adrs){
+        //if(!address page allocated){
+            // swap pra memoria fisica 
+        //}
+
+        // checar o address
     }
+
 };
 
 class Virtual_Memory{
@@ -57,6 +72,7 @@ class Virtual_Memory{
         uint16_t pages_total;
         uint16_t pages_allocated = 0;
         vector<Process> process_table;
+        vector<Disc_Page> pages;
     
     Virtual_Memory(uint16_t size, uint16_t page_size){
         this->size = size;
@@ -65,15 +81,18 @@ class Virtual_Memory{
     }
 
     bool allocate_process(Process p){
-        if(this->pages_allocated + p.len_pages < this->pages_total){
+        if(this->pages_allocated + p.len_pages <= this->pages_total){
             process_table.push_back(p);
-            p.allocated = true;
+            // alocar na memoria fisica -> passar as páginas do processo pra da memoria fisica
+            //p.allocated = true;
             this->pages_allocated += p.len_pages;
             return true;
         } else {
             return false;
         }
     }
+
+
 };
 
 void format(uint16_t size_page);
