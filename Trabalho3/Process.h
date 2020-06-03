@@ -9,6 +9,7 @@ public:
     uint16_t ID;
     uint16_t size;
     uint16_t len_pages;
+    uint16_t size_page;
     vector<Disc_Page> pages;
 
     vector<Disc_Page> getPages();

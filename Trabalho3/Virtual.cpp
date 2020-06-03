@@ -17,3 +17,12 @@ bool Virtual::allocate_process(Process p){
         return false;
     }
 }
+
+bool Virtual::command(uint16_t pID, uint16_t adrs){
+    // Process p = find()
+    /*uint16_t pageID = adrs/this->page_size; 
+    if(!p->pages[pageID].allocated){
+        // swap pra memoria fisica 
+    }*/
+    // p.cmd(adrs);
+}
