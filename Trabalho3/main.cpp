@@ -1,70 +1,21 @@
-#include<bits/stdc++.h>
-
-using namespace std;
+#include "Globals.h"
+#include "Memory.h"
+#include "Virtual.h"
 
 /*Resources*/
 #define VIR_MEMORY 2048 /*Kbytes*/
 #define PRI_MEMORY 1024 /*Kbytes*/
 #define SEC_MEMORY 2048 /*Kbytes*/
 
-
 // Virtual memory tem um vector de processos
 // As memorias tem vector de paginas
-// Criar herança de memoria
+// Criar herança de memoria _> meio OK
 // Criar memoria fisica e secundaria
 // Virtual memory: criar um find de processo
 // Process: cmd
 // Destrutores
 
-
-class Disc_Page{
-    public:
-        uint16_t ID;
-        uint16_t size;
-        bool allocated = false;
-
-    Disc_Page(uint16_t size, uint16_t ID){
-        this->ID = ID;
-        this->size = size;
-        this->reference = NULL;
-    }
-
-    string toString(){
-        return "P";// + this->ID;
-    }
-
-};
-
-class Process{
-    public:
-        uint16_t ID;
-        uint16_t size;
-        uint16_t len_pages;
-        vector<Disc_Page> pages;
-    
-    Process(uint16_t ID, uint16_t size, uint16_t size_page){
-        this->ID = ID;
-        this->size = size;
-        this->len_pages = (int)(size /size_page) + 1;
-        for(int i = 0; i < len_pages; i++){
-            Disc_Page page(size_page, i);
-            pages.push_back(page);
-
-            // memoria princial ou secundaria tem que referenciar essas paginas
-        }
-
-    }
-
-    bool cmd(uint16_t adrs){
-        //if(!address page allocated){
-            // swap pra memoria fisica 
-        //}
-
-        // checar o address
-    }
-
-};
-
+/*
 class Virtual_Memory{
     public:
         uint16_t size;
@@ -169,3 +120,17 @@ void print_mem(){
         printf("|-------------------------------------------------------|\n");
     }
 }
+*/
+
+int main(){
+    int size_page;
+    cout << "Size Page: ";
+    cin >> size_page;
+    /* Memory primary(0);
+    Memory second(0); */
+
+    return 0;
+}
+
+
+
