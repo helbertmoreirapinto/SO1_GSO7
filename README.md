@@ -66,7 +66,3 @@ gcc example.c -o example -lpthread <br/>
 <h1>TRABALHO III</h1>
 <a href = "https://www.google.com">Link video trabalho 3</a>
 <br/>
-
-<h1>TRABALHO IV</h1>
-<a href = "https://www.google.com">Link video trabalho 4</a>
-<br/>
