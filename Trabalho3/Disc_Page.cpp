@@ -6,5 +6,5 @@ Disc_Page::Disc_Page(uint16_t size, uint16_t ID){
     this->allocated = false;
 }
 string Disc_Page::toString(){
-    retunr "teste";
+    return "teste";
 }

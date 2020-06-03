@@ -14,6 +14,7 @@ public:
     
     Virtual(uint page_size);
     bool allocate_process(Process p);
+    bool command(uint16_t pID, uint16_t adrs);
 };
 
 #endif
