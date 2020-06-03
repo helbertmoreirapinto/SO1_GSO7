@@ -6,13 +6,13 @@
 
 class Virtual : public Memory{
 public:
-    uint16_t page_size;
-    uint16_t pages_total;
-    uint16_t pages_allocated;
+    uint page_size;
+    uint pages_total;
+    uint pages_allocated;
     vector<Disc_Page> pages;
     vector<Process> process_table;
     
-    Virtual(uint16_t size, uint16_t page_size);
+    Virtual(uint page_size);
     bool allocate_process(Process p);
 };
 

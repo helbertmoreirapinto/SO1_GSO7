@@ -2,10 +2,8 @@
 #include "Memory.h"
 #include "Virtual.h"
 
-/*Resources*/
-#define VIR_MEMORY 2048 /*Kbytes*/
-#define PRI_MEMORY 1024 /*Kbytes*/
-#define SEC_MEMORY 2048 /*Kbytes*/
+
+
 
 // Virtual memory tem um vector de processos
 // As memorias tem vector de paginas
@@ -103,13 +101,7 @@ void format(uint16_t size_page){
 
 void print_mem(){
     cout << "Principal Memory\n";
-    for(auto it = pri_mem.begin(); it != pri_mem.end(); it+=8){
-        Disc_Page a = *(it+0), b = *(it+1), c = *(it+2), d = *(it+3);
-        Disc_Page e = *(it+4), f = *(it+5), g = *(it+6), h = *(it+7);
-        printf("|-0x%02X-|-0x%02X-|-0x%02X-|-0x%02X-|-0x%02X-|-0x%02X-|-0x%02X-|-0x%02X-|\n",a.ID, b.ID, c.ID, d.ID, e.ID, f.ID, g.ID, h.ID);
-        printf("|      |      |      |      |      |      |      |      |\n");
-        printf("|-------------------------------------------------------|\n");
-    }
+    
     cout << "\n";
     cout << "Second Memory\n";
     for(auto it = sec_mem.begin(); it != sec_mem.end(); it+=8){
@@ -123,11 +115,10 @@ void print_mem(){
 */
 
 int main(){
-    int size_page;
+    uint16_t size_page;
     cout << "Size Page: ";
     cin >> size_page;
-    /* Memory primary(0);
-    Memory second(0); */
+    Virtual vm(size_page);
 
     return 0;
 }

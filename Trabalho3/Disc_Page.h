@@ -5,11 +5,11 @@
 
 class Disc_Page{
 private:
-    uint16_t ID;
-    uint16_t size;
+    uint ID;
+    uint size;
     bool allocated;
 public:
-    Disc_Page(uint16_t size, uint16_t ID);
+    Disc_Page(uint size, uint ID);
     string toString();
 };
 

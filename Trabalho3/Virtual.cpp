@@ -1,9 +1,8 @@
 #include "Virtual.h"
 
-Virtual::Virtual(uint16_t size, uint16_t page_size){
+Virtual::Virtual(uint16_t page_size){
     this(0);
-    this->page_size = page_size;
-    this->pages_total = (int)(size/page_size);
+    this->pages_total = (int)(VIR_MEMORY/page_size);
 }
 
 bool Virtual::allocate_process(Process p){

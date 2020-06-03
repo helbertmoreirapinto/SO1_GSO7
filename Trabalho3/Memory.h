@@ -12,6 +12,7 @@ public:
     vector<Disc_Page> pages;
 
     Memory(uint16_t ID);
+    void print();
 };
 
 #endif
