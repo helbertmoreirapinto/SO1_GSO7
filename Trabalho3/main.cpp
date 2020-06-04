@@ -2,9 +2,6 @@
 #include "Memory.h"
 #include "Virtual.h"
 
-
-
-
 // Virtual memory tem um vector de processos
 // As memorias tem vector de paginas
 // Criar herança de memoria _> meio OK
@@ -40,8 +37,6 @@ class Virtual_Memory{
             return false;
         }
     }
-
-
 };
 
 void format(uint16_t size_page);
@@ -115,10 +110,12 @@ void print_mem(){
 */
 
 int main(){
-    uint16_t size_page;
+    uint size_page;
     cout << "Size Page: ";
     cin >> size_page;
-    Virtual vm(size_page);
+    //Virtual vm(size_page);
+    Virtual vm;
+    vm.setSizePage(size_page);
 
     return 0;
 }

@@ -1,8 +1,14 @@
 #include "Virtual.h"
 
-Virtual::Virtual(uint16_t page_size){
+/* 
+Virtual::Virtual(uint page_size){
     this(0);
     this->pages_total = (int)(VIR_MEMORY/page_size);
+}
+ */
+
+void Virtual::setSizePage(uint page_size){
+    this->page_size = page_size;
 }
 
 bool Virtual::allocate_process(Process p){
@@ -17,7 +23,7 @@ bool Virtual::allocate_process(Process p){
     }
 }
 
-bool Virtual::command(uint16_t pID, uint16_t adrs){
+bool Virtual::command(uint pID, uint adrs){
     // Process p = find()
     /*uint16_t pageID = adrs/this->page_size; 
     if(!p->pages[pageID].allocated){

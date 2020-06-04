@@ -1,10 +1,10 @@
-#ifndef VIRTUAL_MEMORY_H
-#define VIRTUAL_MEMORY_H
+#ifndef VIRTUAL_H
+#define VIRTUAL_H
 
 #include "Process.h"
 #include "Memory.h"
 
-class Virtual : public Memory{
+class Virtual{
 public:
     uint page_size;
     uint pages_total;
@@ -12,9 +12,10 @@ public:
     vector<Disc_Page> pages;
     vector<Process> process_table;
     
-    Virtual(uint page_size);
+    //Virtual(uint page_size);
     bool allocate_process(Process p);
-    bool command(uint16_t pID, uint16_t adrs);
+    bool command(uint pID, uint adrs);
+    void setSizePage(uint page_size);
 };
 
 #endif
