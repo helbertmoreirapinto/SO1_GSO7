@@ -7,10 +7,17 @@ int main(){
 
     VirtualMemory vm(size_pag);
 
-    vm.allocate_process(1, 5);
-    vm.allocate_process(2, 10);
-    vm.allocate_process(3, 16);
-    vm.kill_process(2);
+    vm.allocate_process(1, 42);
     vm.print(); // for debug
+    
+    vm.kill_process(1);
+    vm.print(); // for debug
+    
+    vm.allocate_process(2, 10);
+    vm.print(); // for debug
+    
+    vm.allocate_process(3, 16);
+    vm.print(); // for debug
+
     return 0;
 }

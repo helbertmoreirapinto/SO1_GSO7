@@ -9,6 +9,11 @@ Memory::Memory(){
 }
 
 void Memory::print(){
+    if(page_list.empty()){
+        cout << "Vazio" << endl;
+        return;
+    }
+    
     for(Disc_Page page : page_list){
         printf("| Process %d | Page %d |\n", page.pid, page.adress);
     }
