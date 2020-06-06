@@ -1,5 +1,5 @@
-#include "Globals.h"
-#include "Disc_Page.h"
+#include "headers/Globals.h"
+#include "headers/Disc_Page.h"
 
 // adress - disk page identifier
 // pid - process identifier

@@ -1,5 +1,5 @@
-#include "VirtualMemory.h"
-#include "Globals.h"
+#include "headers/Globals.h"
+#include "headers/VirtualMemory.h"
 
 int main(){
     cout << "Tamanho da pagina: ";
