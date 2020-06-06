@@ -16,12 +16,13 @@ void VirtualMemory::allocate_process(int pid, int process_size){
     if(available_size < process_size){ //Add lista de espera
         wait_process_list.push(process);
     }else{
-        
-        available_size -= process_size;
+        //(falta fazer) ALGORITMO -> se RAM cheia, swap de paginas da ram com o disco
         int num_pages = (int)(process_size / page_size);
         if(process_size % page_size) num_pages++;
         for(int p = 0; p < num_pages; p++){
             Disc_Page page(p, pid, page_size);
+            process.page_list.push_back(page);
+            
             if(primary.available_size){
                 primary.page_list.push_back(page);
                 primary.available_size -= page_size;
@@ -32,14 +33,8 @@ void VirtualMemory::allocate_process(int pid, int process_size){
                 cout << "Memory Error" << endl;
             }
         }
-
-
-        
-        
-        //alocar maximo que der na RAM e restante no disco
-        //se ram cheia, remover uma pagina de um processo com maior id
-        //ALGORITMO
-
+        available_size -= process_size;
+        process_list.push_back(process);
     }
 }
 

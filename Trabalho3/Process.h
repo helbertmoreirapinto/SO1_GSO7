@@ -8,7 +8,7 @@ class Process{
 public:
     int id;
     int size;
-    vector<Disc_Page> pageList;
+    vector<Disc_Page> page_list;
     Process(int id, int size);
 };
 
