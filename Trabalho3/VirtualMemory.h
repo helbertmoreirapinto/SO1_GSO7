@@ -10,17 +10,18 @@ public:
     int page_size;
     int available_size;
 
-    Memory primary(MEM_RAM);
-    Memory disc(MEM_DISC);
+    Memory primary;
+    Memory disc;
 
     vector<Process> process_list;
-    vector<Process> wait_process_list;
+    queue<Process> wait_process_list;
 
     VirtualMemory(int page_size);
     
-    void allocate_process(int pid, int size_process);
+    void allocate_process(int pid, int process_size);
     void kill_process(int pid);
     void command(int pid, int adress);
+    void print();
 };
 
 #endif

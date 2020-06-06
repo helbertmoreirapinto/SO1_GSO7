@@ -1,11 +1,21 @@
+#include "Globals.h"
 #include "Disc_Page.h"
 
-Disc_Page::Disc_Page(uint16_t size, uint16_t ID){
-    this->ID = ID;
+// adress - disk page identifier
+// pid - process identifier
+// size - disk page size
+Disc_Page::Disc_Page(int adress, int pid, int size){
+    this->adress = adress;
+    this->pid = pid;
     this->size = size;
-    this->allocated = false;
+    
+    int multipl = (int)(size/sizeof(int));
+    info = new int[multipl];
+    memset(info, -1, sizeof(info));
 }
 
-string Disc_Page::toString(){
-    return "teste";
+/*
+Disc_Page::~Disc_Page(){
+    free(info);
 }
+*/

@@ -1,124 +1,16 @@
+#include "VirtualMemory.h"
 #include "Globals.h"
-#include "Memory.h"
-#include "Virtual.h"
-
-// Virtual memory tem um vector de processos
-// As memorias tem vector de paginas
-// Criar herança de memoria _> meio OK
-// Criar memoria fisica e secundaria
-// Virtual memory: criar um find de processo
-// Process: cmd
-// Destrutores
-
-/*
-class Virtual_Memory{
-    public:
-        uint16_t size;
-        uint16_t page_size;
-        uint16_t pages_total;
-        uint16_t pages_allocated = 0;
-        vector<Process> process_table;
-        vector<Disc_Page> pages;
-    
-    Virtual_Memory(uint16_t size, uint16_t page_size){
-        this->size = size;
-        this->page_size = page_size;
-        this->pages_total = (int)(size/page_size);
-    }
-
-    bool allocate_process(Process p){
-        if(this->pages_allocated + p.len_pages <= this->pages_total){
-            process_table.push_back(p);
-            // alocar na memoria fisica -> passar as páginas do processo pra da memoria fisica
-            //p.allocated = true;
-            this->pages_allocated += p.len_pages;
-            return true;
-        } else {
-            return false;
-        }
-    }
-};
-
-void format(uint16_t size_page);
-void init_virt();
-void print_mem();
-
-vector<Disc_Page> virtual_mem;
-vector<Disc_Page> pri_mem = {};
-vector<Disc_Page> sec_mem = {};
 
 int main(){
-    uint16_t size_page;
-    cout << "Input size disc page : "; cin >> size_page;
+    cout << "Tamanho da pagina: ";
+    int size_pag; cin >> size_pag;
 
-    Virtual_Memory vm(VIR_MEMORY, size_page);
-    cout << "Paginas total: " << vm.pages_total << endl;
-    for (int i = 0; i < 3; i++)
-    {
-        Process p(i, 1023, size_page);
-        cout << vm.allocate_process(p) << endl;
-        cout << "Paginas alocadas: " << vm.pages_allocated << endl;
-    }
-    
-    
-    //format(size_page);
-    //init_virt();
+    VirtualMemory vm(size_pag);
 
-    //print_mem();
+    vm.allocate_process(0, 100);
+    vm.print(); // for debug
 
-    //create pages im memories() //format()
-    //create virtualization()
-    
-    //create process()
-    //allocate memory for process()
-    //use memory
-    //kill process()
-
-    //kill pages() //free memory
+    vm.allocate_process(2, 500);
+    vm.allocate_process(3, 100);
     return 0;
 }
-
-
-void format(uint16_t size_page){
-    int len_pri_pages = (int)(PRI_MEMORY/size_page);
-    for(int i = 0; i < len_pri_pages; i++){
-        Disc_Page page(size_page, i);
-        pri_mem.push_back(page);
-    }
-
-    int len_sec_pages = (int)(SEC_MEMORY/size_page);
-    for(int i = 0; i < len_sec_pages; i++){
-        Disc_Page page(size_page, i);
-        sec_mem.push_back(page);
-    }
-}
-
-
-void print_mem(){
-    cout << "Principal Memory\n";
-    
-    cout << "\n";
-    cout << "Second Memory\n";
-    for(auto it = sec_mem.begin(); it != sec_mem.end(); it+=8){
-        Disc_Page a = *(it+0), b = *(it+1), c = *(it+2), d = *(it+3);
-        Disc_Page e = *(it+4), f = *(it+5), g = *(it+6), h = *(it+7);
-        printf("|-0x%02X-|-0x%02X-|-0x%02X-|-0x%02X-|-0x%02X-|-0x%02X-|-0x%02X-|-0x%02X-|\n",a.ID, b.ID, c.ID, d.ID, e.ID, f.ID, g.ID, h.ID);
-        printf("|      |      |      |      |      |      |      |      |\n");
-        printf("|-------------------------------------------------------|\n");
-    }
-}
-*/
-
-int main(){
-    uint size_page;
-    cout << "Size Page: ";
-    cin >> size_page;
-    //Virtual vm(size_page);
-    Virtual vm;
-    vm.setSizePage(size_page);
-
-    return 0;
-}
-
-
-

@@ -6,15 +6,10 @@
 
 class Process{
 public:
-    uint16_t ID;
-    uint16_t size;
-    uint16_t len_pages;
-    uint16_t size_page;
-    vector<Disc_Page> pages;
-
-    vector<Disc_Page> getPages();
-    Process(uint16_t ID, uint16_t size, uint16_t size_page);
-    bool cmd(uint16_t adrs);
+    int id;
+    int size;
+    vector<Disc_Page> pageList;
+    Process(int id, int size);
 };
 
 #endif

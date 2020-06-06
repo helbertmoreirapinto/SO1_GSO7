@@ -6,12 +6,10 @@
 
 class Memory{
 public:
-    uint16_t ID;
-    uint16_t size;
-    uint16_t len_pages;
-    vector<Disc_Page> pages;
-
-    Memory(uint16_t ID);
+    int available_size;
+    vector<Disc_Page> page_list;
+    Memory(int available_size);
+    Memory();
     void print();
 };
 

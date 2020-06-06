@@ -1,16 +1,15 @@
-#ifndef DISC_H
-#define DISC_H
-
-#include "Globals.h"
+#ifndef DISC_PAGE_H
+#define DISC_PAGE_H
 
 class Disc_Page{
-private:
-    uint ID;
-    uint size;
-    bool allocated;
 public:
-    Disc_Page(uint size, uint ID);
-    string toString();
+    int adress;
+    int* info;
+    int size;
+    int pid;
+    
+    Disc_Page(int adress, int pid, int size);
+    //~Disc_Page();
 };
 
 #endif
