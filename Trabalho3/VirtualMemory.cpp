@@ -1,5 +1,10 @@
 #include "VirtualMemory.h"
 
+int pkill = 0;
+bool find_process(Process process) {
+  return process.id == pkill;
+}
+
 VirtualMemory::VirtualMemory(int page_size){
     this->page_size = page_size;
     this->total_size = this->available_size = MEM_DISC + MEM_RAM;
@@ -22,7 +27,7 @@ void VirtualMemory::allocate_process(int pid, int process_size){
         for(int p = 0; p < num_pages; p++){
             Disc_Page page(p, pid, page_size);
             process.page_list.push_back(page);
-            
+
             if(primary.available_size){
                 primary.page_list.push_back(page);
                 primary.available_size -= page_size;
@@ -39,7 +44,15 @@ void VirtualMemory::allocate_process(int pid, int process_size){
 }
 
 void VirtualMemory::kill_process(int pid){
-    
+    pkill = pid;
+    auto it = find_if(process_list.begin(), process_list.end(), find_process);
+    if (it == process_list.end()){
+        cout << "Process nao encontrado" << endl;
+        return;
+    }
+    Process process = *it;
+    //remover paginas do processo
+    //ver se algum outro processo pode entrar em execucao
 }
 
 void VirtualMemory::command(int pid, int adress){

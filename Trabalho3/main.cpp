@@ -10,6 +10,7 @@ int main(){
     vm.allocate_process(1, 5);
     vm.allocate_process(2, 10);
     vm.allocate_process(3, 16);
+    vm.kill_process(2);
     vm.print(); // for debug
     return 0;
 }
