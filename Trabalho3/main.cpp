@@ -2,6 +2,9 @@
 #include "headers/VirtualMemory.h"
 
 int main(){
+    cout << "RAM:" << MEM_RAM << endl;
+    cout << "DISCO:" << MEM_DISC << endl;
+
     cout << "Tamanho da pagina: ";
     int size_pag; cin >> size_pag;
 
@@ -10,13 +13,13 @@ int main(){
     vm.allocate_process(1, 42);
     vm.print(); // for debug
     
-    vm.kill_process(1);
-    vm.print(); // for debug
-    
     vm.allocate_process(2, 10);
     vm.print(); // for debug
     
-    vm.allocate_process(3, 16);
+    vm.kill_process(1);
+    vm.print(); // for debug
+    
+    vm.allocate_process(3, 40);
     vm.print(); // for debug
 
     return 0;

@@ -23,27 +23,26 @@ void VirtualMemory::allocate_process(int pid, int process_size){
         return;
     }
 
-    //(falta fazer) ALGORITMO -> se RAM cheia, swap de paginas da ram com o disco
     int num_pages = (int)(process_size / page_size);
     if(process_size % page_size) num_pages++;
+    
     for(int p = 0; p < num_pages; p++){
+
         Disc_Page page(p, pid, page_size);
         process.page_list.push_back(page);
 
-        if(primary.available_size){
-            primary.page_list.push_back(page);
-            primary.available_size -= page_size;
-        }else if(disc.available_size){
-            disc.page_list.push_back(page);
-            disc.available_size -= page_size;
-        }else{
-            cout << "Memory Error" << endl;
-        }
+        if(!primary.available_size)
+            swap_fifo();
+        
+        primary.page_list.push(page);
+        primary.available_size -= page_size;
     }
-    available_size -= process_size;
+
+    available_size -= (num_pages * page_size);
     process_list.push_back(process);
 }
 
+//com problemas
 void VirtualMemory::kill_process(int pid){
     pfind = pid;
     auto it = find_if(process_list.begin(), process_list.end(), find_process);
@@ -54,26 +53,39 @@ void VirtualMemory::kill_process(int pid){
     process_list.erase(it);
 
     Process process = *it;
-    for(auto it = primary.page_list.begin(); it != primary.page_list.end(); it++){
-        if((*it).pid == process.id){
-            primary.page_list.erase(it--);
+    
+    queue<Disc_Page> aux = {};
+    while(!primary.page_list.empty()){
+        Disc_Page page = primary.page_list.front();
+        if(page.pid == process.id){
             primary.available_size += page_size;
             available_size += page_size;
+        }else{
+            aux.push(page);
         }
+        primary.page_list.pop();
     }
-    for(auto it = disc.page_list.begin(); it != disc.page_list.end(); it++){
-        if((*it).pid == process.id){
-            disc.page_list.erase(it--);
+    primary.page_list = aux;
+
+    aux = {};
+    while(!disc.page_list.empty()){
+        Disc_Page page = disc.page_list.front();
+        if(page.pid == process.id){
             disc.available_size += page_size;
             available_size += page_size;
+        }else{
+            aux.push(page);
         }
+        disc.page_list.pop();   
     }
+    disc.page_list = aux;
 
     //(falta fazer) mover processos do wait pra executando
+
 }
 
 void VirtualMemory::command(int pid, int adress){
-    
+    //(falta fazer)
 }
 
 void VirtualMemory::print(){
@@ -84,4 +96,16 @@ void VirtualMemory::print(){
     cout << "DISC" << endl;
     disc.print();
     cout << endl;
+}
+
+void VirtualMemory::swap_fifo(){
+    disc.page_list.push(primary.page_list.front());
+    primary.page_list.pop();
+    
+    primary.available_size += page_size;
+    disc.available_size -= page_size;
+}
+
+void VirtualMemory::swap_relogio(){
+    //(falta fazer)
 }

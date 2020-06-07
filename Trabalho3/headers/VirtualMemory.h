@@ -21,6 +21,8 @@ public:
     void allocate_process(int pid, int process_size);
     void kill_process(int pid);
     void command(int pid, int adress);
+    void swap_fifo();
+    void swap_relogio();
     void print();
 };
 
