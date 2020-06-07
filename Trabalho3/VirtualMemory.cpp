@@ -38,7 +38,7 @@ void VirtualMemory::allocate_process(int pid, int process_size){
         if(!primary.available_size)
             swap_fifo();
         
-        primary.page_list.push(page);
+        primary.page_list.push_back(page);
         primary.available_size -= page_size;
     }
 
@@ -54,43 +54,31 @@ void VirtualMemory::kill_process(int pid){
         cout << "Processo nao encontrado" << endl;
         return;
     }
-    process_list.erase(it);
 
     Process process = *it;
-    
-    queue<Disc_Page> aux = {};
-    while(!primary.page_list.empty()){
-        Disc_Page page = primary.page_list.front();
-        if(page.pid == process.id){
-            primary.available_size += page_size;
-            available_size += page_size;
-        }else{
-            aux.push(page);
-        }
-        primary.page_list.pop();
-    }
-    primary.page_list = aux;
-
-    aux = {};
-    while(!disc.page_list.empty()){
-        Disc_Page page = disc.page_list.front();
+    for(auto itr = primary.page_list.begin(); itr != primary.page_list.end(); itr++){
+        Disc_Page page = *itr;
         if(page.pid == process.id){
             disc.available_size += page_size;
             available_size += page_size;
-        }else{
-            aux.push(page);
+            primary.page_list.erase(itr--);
         }
-        disc.page_list.pop();   
     }
-    disc.page_list = aux;
 
-    //mover processos do wait pra executando
-    for(int i = 0; i < wait_process_list.size(); i++){
-        if(wait_process_list[i].size < available_size){
-            allocate_process(wait_process_list[i]);
-            wait_process_list.erase(wait_process_list.begin() + i);
-            break;
+    for(auto itr = disc.page_list.begin(); itr != disc.page_list.end(); itr++){
+        Disc_Page page = *itr;
+        if(page.pid == process.id){
+            disc.available_size += page_size;
+            available_size += page_size;
+            disc.page_list.erase(itr--);
         }
+    }
+    process_list.erase(it);
+    
+    //mover processos do wait pra executando
+    if(!wait_process_list.empty() && wait_process_list[0].size < available_size){
+        allocate_process(wait_process_list[0]);
+        wait_process_list.erase(wait_process_list.begin());
     }
 
 }
@@ -110,13 +98,17 @@ void VirtualMemory::print(){
 }
 
 void VirtualMemory::swap_fifo(){
-    disc.page_list.push(primary.page_list.front());
-    primary.page_list.pop();
+    disc.page_list.push_back(primary.page_list.front());
+    primary.page_list.erase(primary.page_list.begin());
     
     primary.available_size += page_size;
     disc.available_size -= page_size;
 }
 
 void VirtualMemory::swap_relogio(){
+    //(falta fazer)
+}
+
+void VirtualMemory::swap_lru(){
     //(falta fazer)
 }

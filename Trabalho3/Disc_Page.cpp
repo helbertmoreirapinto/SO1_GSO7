@@ -8,6 +8,7 @@ Disc_Page::Disc_Page(int adress, int pid, int size){
     this->adress = adress;
     this->pid = pid;
     this->size = size;
+    this->count = 0;
     
     int multipl = (int)(size/sizeof(int));
     info = new int[multipl];

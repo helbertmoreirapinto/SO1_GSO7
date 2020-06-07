@@ -14,12 +14,7 @@ void Memory::print(){
         return;
     }
 
-    queue<Disc_Page> aux = {};
-    while(!page_list.empty()){
-        Disc_Page page = page_list.front();
-        page_list.pop();
+    for(Disc_Page page : page_list){
         printf("| Process %d | Page %d |\n", page.pid, page.adress);
-        aux.push(page);
     }
-    page_list = aux;
 }

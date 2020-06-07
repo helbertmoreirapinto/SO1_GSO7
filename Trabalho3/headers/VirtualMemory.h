@@ -24,6 +24,7 @@ public:
     void command(int pid, int adress);
     void swap_fifo();
     void swap_relogio();
+    void swap_lru();
     void print();
 };
 
