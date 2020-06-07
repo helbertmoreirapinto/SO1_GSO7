@@ -29,6 +29,7 @@ private:
     void swap_fifo();
     void swap_relogio();
     void swap_lru();
+    void default_swap();
 };
 
 #endif

@@ -19,7 +19,10 @@ int main(){
     vm.command(1, 7);
     vm.print();
 
-    vm.allocate_process(3, 40);
+    vm.command(1, 29);
+    vm.print();
+
+    vm.allocate_process(3, 2);
     vm.print(); // for debug
 
     vm.kill_process(1);

@@ -45,7 +45,7 @@ void VirtualMemory::allocate_process(int pid, int process_size){
         process.page_list.push_back(page);
 
         if(!primary.available_size)
-            swap_fifo();
+            default_swap();
         
         primary.page_list.push_back(page);
         primary.available_size -= page_size;
@@ -105,10 +105,14 @@ void VirtualMemory::command(int pid, int adress){
     
     //caso precise fazer swap
     if(it1 == primary.page_list.end()){
-        swap_lru();
+        default_swap();
         (*it2).count++;
+        
         primary.page_list.push_back(*it2);
+        disc.page_list.erase(it2);
+        
         primary.available_size -= page_size;
+        disc.available_size += page_size;
     }else{
         primary.page_list[it1 - primary.page_list.begin()].count++;
     }
@@ -123,7 +127,7 @@ void VirtualMemory::swap_fifo(){
 void VirtualMemory::swap_lru(){
     auto it_swap = primary.page_list.begin();
     for(auto it = primary.page_list.begin(); it != primary.page_list.end(); it++){
-        if((*it).count > (*it_swap).count)
+        if((*it).count < (*it_swap).count)
             it_swap = it;
     }
     (*it_swap).count = 0;
@@ -139,6 +143,10 @@ void VirtualMemory::swap_relogio(){
 void VirtualMemory::swap_memory(){
     primary.available_size += page_size;
     disc.available_size -= page_size;
+}
+
+void VirtualMemory::default_swap(){
+    swap_lru();
 }
 
 void VirtualMemory::print(){
