@@ -13,13 +13,17 @@ VirtualMemory::VirtualMemory(int page_size){
     this->disc.available_size = MEM_DISC;
 }
 
+void VirtualMemory::allocate_process(Process process){
+    allocate_process(process.id, process.size);
+}
+
 // pid - process identifier
 // process_size - process size in bytes 
 void VirtualMemory::allocate_process(int pid, int process_size){
     Process process(pid, process_size);
 
     if(available_size < process_size){ //Add lista de espera
-        wait_process_list.push(process);
+        wait_process_list.push_back(process);
         return;
     }
 
@@ -80,7 +84,14 @@ void VirtualMemory::kill_process(int pid){
     }
     disc.page_list = aux;
 
-    //(falta fazer) mover processos do wait pra executando
+    //mover processos do wait pra executando
+    for(int i = 0; i < wait_process_list.size(); i++){
+        if(wait_process_list[i].size < available_size){
+            allocate_process(wait_process_list[i]);
+            wait_process_list.erase(wait_process_list.begin() + i);
+            break;
+        }
+    }
 
 }
 
