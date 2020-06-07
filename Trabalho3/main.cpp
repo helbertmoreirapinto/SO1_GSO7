@@ -12,14 +12,17 @@ int main(){
 
     vm.allocate_process(1, 42);
     vm.print(); // for debug
-    
+
     vm.allocate_process(2, 10);
     vm.print(); // for debug
     
-    vm.kill_process(1);
-    vm.print(); // for debug
-    
+    vm.command(1, 7);
+    vm.print();
+
     vm.allocate_process(3, 40);
+    vm.print(); // for debug
+
+    vm.kill_process(1);
     vm.print(); // for debug
 
     return 0;

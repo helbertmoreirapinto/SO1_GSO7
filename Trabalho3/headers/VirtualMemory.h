@@ -22,10 +22,13 @@ public:
     void allocate_process(Process process);
     void kill_process(int pid);
     void command(int pid, int adress);
+    void print();
+
+private:
+    void swap_memory();
     void swap_fifo();
     void swap_relogio();
     void swap_lru();
-    void print();
 };
 
 #endif

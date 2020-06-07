@@ -1,8 +1,15 @@
 #include "headers/VirtualMemory.h"
 
-int pfind = 0;
+int find_process_id = 0;
+int find_page_pid = 0;
+int find_page_adress = 0;
+
 bool find_process(Process process) {
-  return process.id == pfind;
+  return process.id == find_process_id;
+}
+
+bool find_page(Disc_Page page) {
+  return page.pid == find_page_pid && page.adress == find_page_adress;
 }
 
 VirtualMemory::VirtualMemory(int page_size){
@@ -20,9 +27,11 @@ void VirtualMemory::allocate_process(Process process){
 // pid - process identifier
 // process_size - process size in bytes 
 void VirtualMemory::allocate_process(int pid, int process_size){
+    printf("ALLOC -> pro:%d\n",pid);
     Process process(pid, process_size);
 
     if(available_size < process_size){ //Add lista de espera
+        cout << "sem espaco na mem virtual\n";
         wait_process_list.push_back(process);
         return;
     }
@@ -48,7 +57,8 @@ void VirtualMemory::allocate_process(int pid, int process_size){
 
 //com problemas
 void VirtualMemory::kill_process(int pid){
-    pfind = pid;
+    printf("KILL -> pro:%d\n",pid);
+    find_process_id = pid;
     auto it = find_if(process_list.begin(), process_list.end(), find_process);
     if (it == process_list.end()){
         cout << "Processo nao encontrado" << endl;
@@ -59,7 +69,7 @@ void VirtualMemory::kill_process(int pid){
     for(auto itr = primary.page_list.begin(); itr != primary.page_list.end(); itr++){
         Disc_Page page = *itr;
         if(page.pid == process.id){
-            disc.available_size += page_size;
+            primary.available_size += page_size;
             available_size += page_size;
             primary.page_list.erase(itr--);
         }
@@ -76,39 +86,69 @@ void VirtualMemory::kill_process(int pid){
     process_list.erase(it);
     
     //mover processos do wait pra executando
-    if(!wait_process_list.empty() && wait_process_list[0].size < available_size){
-        allocate_process(wait_process_list[0]);
-        wait_process_list.erase(wait_process_list.begin());
+    for(Process new_process : wait_process_list){
+        if(new_process.size >= available_size)
+            break;
+        allocate_process(new_process);
     }
-
 }
 
 void VirtualMemory::command(int pid, int adress){
-    //(falta fazer)
-}
+    //ver qual pagina esta adress
+    int num_page = adress / page_size;
+    find_page_pid = pid;
+    find_page_adress = num_page;
 
-void VirtualMemory::print(){
-    cout << "RAM" << endl;
-    primary.print();
-    cout << endl;
-
-    cout << "DISC" << endl;
-    disc.print();
-    cout << endl;
+    printf("USE -> pro:%d page:%d \n",pid, num_page);
+    auto it1 = find_if(primary.page_list.begin(), primary.page_list.end(), find_page);
+    auto it2 = find_if(disc.page_list.begin(), disc.page_list.end(), find_page);
+    
+    //caso precise fazer swap
+    if(it1 == primary.page_list.end()){
+        swap_lru();
+        (*it2).count++;
+        primary.page_list.push_back(*it2);
+        primary.available_size -= page_size;
+    }else{
+        primary.page_list[it1 - primary.page_list.begin()].count++;
+    }
 }
 
 void VirtualMemory::swap_fifo(){
     disc.page_list.push_back(primary.page_list.front());
     primary.page_list.erase(primary.page_list.begin());
-    
-    primary.available_size += page_size;
-    disc.available_size -= page_size;
+    swap_memory();
+}
+
+void VirtualMemory::swap_lru(){
+    auto it_swap = primary.page_list.begin();
+    for(auto it = primary.page_list.begin(); it != primary.page_list.end(); it++){
+        if((*it).count > (*it_swap).count)
+            it_swap = it;
+    }
+    (*it_swap).count = 0;
+    disc.page_list.push_back(*it_swap);
+    primary.page_list.erase(it_swap);
+    swap_memory();
 }
 
 void VirtualMemory::swap_relogio(){
     //(falta fazer)
 }
 
-void VirtualMemory::swap_lru(){
-    //(falta fazer)
+void VirtualMemory::swap_memory(){
+    primary.available_size += page_size;
+    disc.available_size -= page_size;
+}
+
+void VirtualMemory::print(){
+    cout << "----------------------------------------\n";
+    cout << "RAM" << endl;
+    primary.print();
+    cout << endl;
+
+    cout << "DISC" << endl;
+    disc.print();
+    cout << "----------------------------------------\n";
+    cout << endl;
 }

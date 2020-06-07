@@ -15,6 +15,10 @@ Disc_Page::Disc_Page(int adress, int pid, int size){
     memset(info, -1, sizeof(info));
 }
 
+Disc_Page::Disc_Page(){
+    adress = pid = size = count = 0;
+}
+
 /*
 Disc_Page::~Disc_Page(){
     free(info);

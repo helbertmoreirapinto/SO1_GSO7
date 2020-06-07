@@ -15,6 +15,6 @@ void Memory::print(){
     }
 
     for(Disc_Page page : page_list){
-        printf("| Process %d | Page %d |\n", page.pid, page.adress);
+        printf("| Process %02d | Page %02d | Counter %02d |\n", page.pid, page.adress, page.count);
     }
 }
