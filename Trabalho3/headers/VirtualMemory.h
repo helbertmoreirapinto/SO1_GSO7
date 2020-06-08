@@ -23,6 +23,8 @@ public:
     void kill_process(int pid);
     void command(int pid, int adress);
     void print();
+    void print_wait_list();
+    void find_process_VM(int pid);
 
 private:
     void swap_memory();
