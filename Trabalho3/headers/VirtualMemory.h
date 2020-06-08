@@ -22,9 +22,10 @@ public:
     void allocate_process(Process process);
     void kill_process(int pid);
     void command(int pid, int adress);
+    void print_process(int pid);
     void print();
     void print_wait_list();
-    void find_process_VM(int pid);
+    void show();
 
 private:
     void swap_memory();
@@ -32,6 +33,8 @@ private:
     void swap_relogio();
     void swap_lru();
     void default_swap();
+    Process* find_process_VM(int pid);
+    void print_process_list(vector<Process> p_list);
 };
 
 #endif

@@ -41,6 +41,10 @@ int main(){
                 vm.print();
                 break;
             
+            case 'S':
+                vm.show();
+                break;
+            
             case 'W':
                 vm.print_wait_list();
                 break;
@@ -57,7 +61,7 @@ int main(){
 
             case 'F':
                 cin >> pid;
-                vm.find_process_VM(pid);
+                vm.print_process(pid);
                 break;
 
             case 'E':

@@ -28,6 +28,7 @@ void VirtualMemory::allocate_process(Process process){
 // process_size - process size in bytes 
 void VirtualMemory::allocate_process(int pid, int process_size){
     printf("ALLOC -> pro:%d\n",pid);
+
     // tratar para nao alocar processo com o mesmo pid
     // process list ser uma lista ordenada
     Process process(pid, process_size);
@@ -99,10 +100,14 @@ void VirtualMemory::kill_process(int pid){
     }
 }
 
-void VirtualMemory::find_process_VM(int pid){
+Process* VirtualMemory::find_process_VM(int pid){
     find_process_id = pid;
     auto it = find_if(process_list.begin(), process_list.end(), find_process);
-    if(it == process_list.end()){
+    if(it == process_list.end())
+        return NULL;
+    //else
+    //    return new Process();
+    /*if(it == process_list.end()){
         cout << "-> PROCESS NOT FOUND AT VM!" << endl;
         it = find_if(wait_process_list.begin(), wait_process_list.end(), find_process);
         if (it != wait_process_list.end()) {
@@ -111,8 +116,16 @@ void VirtualMemory::find_process_VM(int pid){
             cout << "   -> PROCESS NOT FOUND AT WAIT LIST!" << endl;
             return;
         }
-    }
-    cout << "FOUND -> pro:" << (*it).id << " size:"<< (*it).size << " pages:"<< (*it).page_list.size() << endl;
+    }*/
+    
+}
+
+void VirtualMemory::print_process(int pid){
+    Process* p = find_process_VM(pid);
+    if(p == NULL)
+        cout << "-> PROCESS NOT FOUND AT VM!" << endl;
+    //cout << "FOUND -> pro:" << p.id << " size:"<< p.size << " pages:"<< p.page_list.size() << endl;
+
 }
 
 void VirtualMemory::command(int pid, int adress){
@@ -200,11 +213,20 @@ void VirtualMemory::print(){
     cout << endl;
 }
 
+void VirtualMemory::print_process_list(vector<Process> p_list){
+    if(p_list.empty())
+        cout << "Vazia";
+    for(Process p : p_list)
+        cout << "(ID: " << p.id << ", size: " << p.size << ", pages:" << p.page_list.size() << ") ";
+    cout << endl;
+}
+
+void VirtualMemory::show(){
+    cout << "Lista de Processos: ";
+    print_process_list(process_list);
+}
+
 void VirtualMemory::print_wait_list(){
     cout << "Lista de Espera: ";
-    if(wait_process_list.empty())
-        cout << "Vazia";
-    for(Process p : wait_process_list)
-        cout << "(ID: " << p.id << ", size: " << p.size << ") ";
-    cout << endl;
+    print_process_list(wait_process_list);
 }
