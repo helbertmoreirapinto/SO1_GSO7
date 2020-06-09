@@ -32,6 +32,7 @@ void VirtualMemory::allocate_process(Process process){
 // pid - process identifier
 // process_size - process size in bytes 
 void VirtualMemory::allocate_process(int pid, int process_size){
+    
     // tratar para nao alocar processo com o mesmo pid
     Process* check_process = find_process_VM(pid);
     if(check_process != NULL){
@@ -65,7 +66,7 @@ void VirtualMemory::allocate_process(int pid, int process_size){
             default_swap();
         
         primary.page_list.insert(primary.page_list.begin()+idx_queue, page);
-        idx_queue++;
+        idx_queue = (idx_queue+1 < MEM_RAM/page_size) ? idx_queue+1 : 0;
         primary.available_size -= page_size;
     }
 
@@ -155,6 +156,7 @@ void VirtualMemory::command(int pid, int adress){
     
     // busca na memoria principal
     auto it1 = find_if(primary.page_list.begin(), primary.page_list.end(), find_page);
+    
     // busca na memoria secundaria
     auto it2 = find_if(disc.page_list.begin(), disc.page_list.end(), find_page);
 
@@ -170,7 +172,13 @@ void VirtualMemory::command(int pid, int adress){
         primary.available_size -= page_size;
         disc.available_size += page_size;
     }else{
-        primary.page_list[it1 - primary.page_list.begin()].count++;
+        int idx_page = it1 - primary.page_list.begin();
+        int dist = (idx_page >= idx_queue) ? (idx_page - idx_queue) : (primary.page_list.size() - idx_queue + idx_page);
+        //se a pagina ref esta a ate 25% [do tamanho total] a frente do ponteiro do relogio
+        //a pagina recebe a marca de referenciada
+        if(dist < 0.25*primary.page_list.size())
+            primary.page_list[idx_page].R = true;    
+        primary.page_list[idx_page].count++;
     }
 
     cout << "   -> END OF OPERATION" << endl;
@@ -197,6 +205,7 @@ void VirtualMemory::swap_lru(){
 
 void VirtualMemory::swap_relogio(){
     while(primary.page_list[idx_queue].R){
+        primary.page_list[idx_queue].R = false;
         idx_queue = ((idx_queue+1) < primary.page_list.size()) ? idx_queue+1 : 0;
     }
     disc.page_list.push_back(primary.page_list[idx_queue]);
@@ -210,7 +219,7 @@ void VirtualMemory::swap_memory(){
 }
 
 void VirtualMemory::default_swap(){
-    swap_lru();
+    swap_relogio();
 }
 
 void VirtualMemory::print(){
