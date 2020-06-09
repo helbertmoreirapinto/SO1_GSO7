@@ -10,6 +10,7 @@ public:
     int size;
     vector<Disc_Page> page_list;
     Process(int id, int size);
+    Process();
 };
 
 #endif

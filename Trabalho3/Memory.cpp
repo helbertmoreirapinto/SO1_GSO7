@@ -10,11 +10,11 @@ Memory::Memory(){
 
 void Memory::print(){
     if(page_list.empty()){
-        cout << "Vazio" << endl;
+        cout << "Empty" << endl;
         return;
     }
 
     for(Disc_Page page : page_list){
-        printf("| Process %02d | Page %02d | Counter %02d |\n", page.pid, page.adress, page.count);
+        printf("| Process %02d | Page %02d | Counter %02d | Bit R %d |\n", page.pid, page.adress, page.count, page.R);
     }
 }

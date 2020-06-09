@@ -3,6 +3,7 @@
 int find_process_id = -1;
 int find_page_pid = -1;
 int find_page_adress = -1;
+static int idx_queue = 0;
 
 bool find_process(Process process) {
   return process.id == find_process_id;
@@ -10,6 +11,10 @@ bool find_process(Process process) {
 
 bool find_page(Disc_Page page) {
   return page.pid == find_page_pid && page.adress == find_page_adress;
+}
+
+bool compare_process(Process a, Process b) {
+  return a.id < b.id;
 }
 
 VirtualMemory::VirtualMemory(int page_size){
@@ -27,22 +32,26 @@ void VirtualMemory::allocate_process(Process process){
 // pid - process identifier
 // process_size - process size in bytes 
 void VirtualMemory::allocate_process(int pid, int process_size){
-    printf("ALLOC -> pro:%d\n",pid);
-
     // tratar para nao alocar processo com o mesmo pid
-    // process list ser uma lista ordenada
-    Process process(pid, process_size);
-
+    Process* check_process = find_process_VM(pid);
+    if(check_process != NULL){
+        cout << "   -> PROCESS ALREADY EXISTS" << endl;
+        free(check_process);
+        return;
+    }
     if(total_size < process_size){
         cout << "   -> NO SPACE AT VIRTUAL MEMORY" << endl;
         return;
     }
 
+    Process process(pid, process_size);
     if(available_size < process_size){ //Add lista de espera
         cout << "   -> PROCESS AT WAIT LIST" << endl;
         wait_process_list.push_back(process);
         return;
     }
+
+    printf("ALLOC -> pro:%d\n",pid);
 
     int num_pages = (int)(process_size / page_size);
     if(process_size % page_size) num_pages++;
@@ -55,12 +64,15 @@ void VirtualMemory::allocate_process(int pid, int process_size){
         if(!primary.available_size)
             default_swap();
         
-        primary.page_list.push_back(page);
+        primary.page_list.insert(primary.page_list.begin()+idx_queue, page);
+        idx_queue++;
         primary.available_size -= page_size;
     }
 
     available_size -= (num_pages * page_size);
     process_list.push_back(process);
+    // process list ser uma lista ordenada
+    sort(process_list.begin(), process_list.end(), compare_process);
 }
 
 void VirtualMemory::kill_process(int pid){
@@ -101,24 +113,16 @@ void VirtualMemory::kill_process(int pid){
 }
 
 Process* VirtualMemory::find_process_VM(int pid){
+    Process* p = new Process;
     find_process_id = pid;
     auto it = find_if(process_list.begin(), process_list.end(), find_process);
     if(it == process_list.end())
         return NULL;
-    return NULL;
-    //else
-    //    return new Process();
-    /*if(it == process_list.end()){
-        cout << "-> PROCESS NOT FOUND AT VM!" << endl;
-        it = find_if(wait_process_list.begin(), wait_process_list.end(), find_process);
-        if (it != wait_process_list.end()) {
-            cout << "   -> PROCESS FOUND AT WAIT LIST!" << endl;
-        } else {
-            cout << "   -> PROCESS NOT FOUND AT WAIT LIST!" << endl;
-            return;
-        }
-    }*/
-    
+    p->id = (*it).id;
+    p->page_list = (*it).page_list;
+    p->size = (*it).size;
+
+    return p;
 }
 
 void VirtualMemory::print_process(int pid){
@@ -187,18 +191,17 @@ void VirtualMemory::swap_lru(){
     (*it_swap).count = 0;
     disc.page_list.push_back(*it_swap);
     primary.page_list.erase(it_swap);
+    idx_queue = primary.page_list.size();
     swap_memory();
 }
 
 void VirtualMemory::swap_relogio(){
-    static int idx_clock = 0; //tornar global
-    while(primary.page_list[idx_clock].R){
-        idx_clock = ((idx_clock+1) < primary.page_list.size()) ? idx_clock+1 : 0;
+    while(primary.page_list[idx_queue].R){
+        idx_queue = ((idx_queue+1) < primary.page_list.size()) ? idx_queue+1 : 0;
     }
-    disc.page_list.push_back(primary.page_list[idx_clock]);
-    primary.page_list.erase(primary.page_list.begin()+idx_clock);
+    disc.page_list.push_back(primary.page_list[idx_queue]);
+    primary.page_list.erase(primary.page_list.begin()+idx_queue);
     swap_memory();
-    primary.page_list.in
 }
 
 void VirtualMemory::swap_memory(){
