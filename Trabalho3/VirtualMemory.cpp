@@ -105,6 +105,7 @@ Process* VirtualMemory::find_process_VM(int pid){
     auto it = find_if(process_list.begin(), process_list.end(), find_process);
     if(it == process_list.end())
         return NULL;
+    return NULL;
     //else
     //    return new Process();
     /*if(it == process_list.end()){
@@ -190,7 +191,14 @@ void VirtualMemory::swap_lru(){
 }
 
 void VirtualMemory::swap_relogio(){
-    //(falta fazer)
+    static int idx_clock = 0; //tornar global
+    while(primary.page_list[idx_clock].R){
+        idx_clock = ((idx_clock+1) < primary.page_list.size()) ? idx_clock+1 : 0;
+    }
+    disc.page_list.push_back(primary.page_list[idx_clock]);
+    primary.page_list.erase(primary.page_list.begin()+idx_clock);
+    swap_memory();
+    primary.page_list.in
 }
 
 void VirtualMemory::swap_memory(){

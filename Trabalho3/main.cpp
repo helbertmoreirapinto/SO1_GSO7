@@ -10,21 +10,8 @@ int main(){
     cin >> size_pag;
 
     VirtualMemory vm(size_pag);
-    
-    /*
-    vm.allocate_process(1, 42);
 
-    vm.allocate_process(2, 10);
-    
-    vm.command(1, 7);
-    
-    vm.command(1, 32);
-    
-    vm.allocate_process(3, 2);
-    
-    //vm.kill_process(1);
-    vm.print(); // for debug
-    */
+    bool exit_while = false;
     do{
         int pid, size;
         char command;
@@ -68,10 +55,11 @@ int main(){
                 return 0;
 
             default:
+                exit_while = true;
                 break;
         }
 
-    } while (true);
+    } while (!exit_while);
     
     return 0;
 }

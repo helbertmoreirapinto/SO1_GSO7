@@ -7,7 +7,8 @@ public:
     int* info;
     int size;
     int pid;
-    int count;
+    int count;  // LRU
+    bool R;     // Relogio
     
     Disc_Page();
     Disc_Page(int adress, int pid, int size);

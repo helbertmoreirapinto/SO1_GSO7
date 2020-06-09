@@ -9,6 +9,7 @@ Disc_Page::Disc_Page(int adress, int pid, int size){
     this->pid = pid;
     this->size = size;
     this->count = 0;
+    this->R = false;
     
     int multipl = (int)(size/sizeof(int));
     info = new int[multipl];
@@ -17,6 +18,7 @@ Disc_Page::Disc_Page(int adress, int pid, int size){
 
 Disc_Page::Disc_Page(){
     adress = pid = size = count = 0;
+    R = false;
 }
 
 /*

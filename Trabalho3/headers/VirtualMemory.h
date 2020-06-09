@@ -23,18 +23,18 @@ public:
     void kill_process(int pid);
     void command(int pid, int adress);
     void print_process(int pid);
-    void print();
     void print_wait_list();
+    void print();
     void show();
+    void swap_relogio();
 
 private:
-    void swap_memory();
-    void swap_fifo();
-    void swap_relogio();
-    void swap_lru();
-    void default_swap();
     Process* find_process_VM(int pid);
     void print_process_list(vector<Process> p_list);
+    void default_swap();
+    void swap_memory();
+    void swap_fifo();
+    void swap_lru();
 };
 
 #endif
