@@ -1,8 +1,8 @@
 #include "headers/VirtualMemory.h"
 
-int find_process_id = -1;
-int find_page_pid = -1;
-int find_page_adress = -1;
+int find_process_id = 0;
+int find_page_pid = 0;
+int find_page_address = 0;
 static int idx_queue = 0;
 
 bool find_process(Process process) {
@@ -10,7 +10,7 @@ bool find_process(Process process) {
 }
 
 bool find_page(Disc_Page page) {
-  return page.pid == find_page_pid && page.adress == find_page_adress;
+  return page.pid == find_page_pid && page.address == find_page_address;
 }
 
 bool compare_process(Process a, Process b) {
@@ -130,29 +130,30 @@ void VirtualMemory::print_process(int pid){
     Process* p = find_process_VM(pid);
     if(p == NULL)
         cout << "-> PROCESS NOT FOUND AT VM!" << endl;
-    //cout << "FOUND -> pro:" << p.id << " size:"<< p.size << " pages:"<< p.page_list.size() << endl;
+    else
+        cout << "FOUND -> pro:" << p->id << " size:"<< p->size << " pages:"<< p->page_list.size() << endl;
 
 }
 
-void VirtualMemory::command(int pid, int adress){
-    //ver qual pagina esta adress
-    int num_page = adress / page_size;
+void VirtualMemory::command(int pid, int address){
+    //ver qual pagina esta address
+    int num_page = address / page_size;
     find_process_id = pid;
     find_page_pid = pid;
-    find_page_adress = num_page;
+    find_page_address = num_page;
     
     // busca na lista de processos
     auto it0 = find_if(process_list.begin(), process_list.end(), find_process);
     
     
-    cout << "OPERATE -> pro:" << (*it0).id << " size:"<< (*it0).size << " pages:"<< (*it0).page_list.size() << endl; 
-    // adress fora do size do processo
-    if(adress >= (*it0).size){
-        cout << "   -> UNABLE TO ACESS THIS ADRESS!" << endl;
+    cout << "[INFO] OPERATE -> pro:" << (*it0).id << " size:"<< (*it0).size << " pages:"<< (*it0).page_list.size() << endl; 
+    // address fora do size do processo
+    if(address >= (*it0).size){
+        cout << "[ERROR] UNABLE TO ACESS THIS address!" << endl;
         return;
     }
 
-    printf("USE PAGE -> page:%d \n",num_page);
+    printf("[INFO] USE PAGE -> page:%d \n",num_page);
     
     // busca na memoria principal
     auto it1 = find_if(primary.page_list.begin(), primary.page_list.end(), find_page);
@@ -162,7 +163,7 @@ void VirtualMemory::command(int pid, int adress){
 
     //caso precise fazer swap
     if(it1 == primary.page_list.end()){
-        cout << "   -> SWAPPING PAGES" << endl;
+        cout << "[INFO] SWAPPING PAGES" << endl;
         default_swap();
         (*it2).count++;
         
@@ -181,7 +182,7 @@ void VirtualMemory::command(int pid, int adress){
         primary.page_list[idx_page].count++;
     }
 
-    cout << "   -> END OF OPERATION" << endl;
+    cout << "[INFO] END OF OPERATION = SUCCESS" << endl;
 }
 
 void VirtualMemory::swap_fifo(){
@@ -220,6 +221,7 @@ void VirtualMemory::swap_memory(){
 
 void VirtualMemory::default_swap(){
     swap_relogio();
+    // swap_lru();
 }
 
 void VirtualMemory::print(){
@@ -235,18 +237,18 @@ void VirtualMemory::print(){
 
 void VirtualMemory::print_process_list(vector<Process> p_list){
     if(p_list.empty())
-        cout << "Vazia";
+        cout << "Empty";
     for(Process p : p_list)
         cout << "(ID: " << p.id << ", size: " << p.size << ", pages:" << p.page_list.size() << ") ";
     cout << endl;
 }
 
 void VirtualMemory::show(){
-    cout << "Lista de Processos: ";
+    cout << "Proccess List: ";
     print_process_list(process_list);
 }
 
 void VirtualMemory::print_wait_list(){
-    cout << "Lista de Espera: ";
+    cout << "Wait List: ";
     print_process_list(wait_process_list);
 }

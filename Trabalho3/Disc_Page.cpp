@@ -1,11 +1,11 @@
 #include "headers/Globals.h"
 #include "headers/Disc_Page.h"
 
-// adress - disk page identifier
+// address - disk page identifier
 // pid - process identifier
 // size - disk page size
-Disc_Page::Disc_Page(int adress, int pid, int size){
-    this->adress = adress;
+Disc_Page::Disc_Page(int address, int pid, int size){
+    this->address = address;
     this->pid = pid;
     this->size = size;
     this->count = 0;
@@ -17,7 +17,7 @@ Disc_Page::Disc_Page(int adress, int pid, int size){
 }
 
 Disc_Page::Disc_Page(){
-    adress = pid = size = count = 0;
+    address = pid = size = count = 0;
     R = false;
 }
 

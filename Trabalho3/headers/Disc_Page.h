@@ -3,7 +3,7 @@
 
 class Disc_Page{
 public:
-    int adress;
+    int address;
     int* info;
     int size;
     int pid;

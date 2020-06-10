@@ -1,17 +1,30 @@
 #include "headers/Globals.h"
 #include "headers/VirtualMemory.h"
 
+void help(){
+    cout << "If you enter any unspecified command, the loop will return to input a command.\n\nCommands list and arguments::" << endl;
+    cout << "(Creates a new process): C pid size" << endl;
+    cout << "(Kill a proccess by his pid): K pid" << endl;
+    cout << "(Print Memory RAM and DISC): P" << endl;
+    cout << "(Print the list of proccess at Virtual Memory): S" << endl;
+    cout << "(List the waiting proccesses): W" << endl;
+    cout << "(Make an operation of R/W or I/O at process address): O pid adress" << endl;
+    cout << "(Print information about a process): F pid" << endl;
+    cout << "(Show help): H" << endl;
+    cout << "(Exit the simulator): E" << endl;
+}
+
+
 int main(){
     cout << "RAM:" << MEM_RAM << endl;
     cout << "DISCO:" << MEM_DISC << endl;
 
-    cout << "Tamanho da pagina: ";
-    int size_pag;
-    cin >> size_pag;
+    int size_pag = 8;
+    cout << "Page size: " << size_pag << endl;
+    //cin >> size_pag;
 
     VirtualMemory vm(size_pag);
 
-    bool exit_while = false;
     do{
         int pid, size;
         char command;
@@ -51,15 +64,19 @@ int main(){
                 vm.print_process(pid);
                 break;
 
+            case 'H':
+                help();
+                break;
+
             case 'E':
                 return 0;
 
             default:
-                exit_while = true;
+                cout << "Unknow command!\n" << endl;
                 break;
         }
 
-    } while (!exit_while);
+    } while (true);
     
     return 0;
 }
