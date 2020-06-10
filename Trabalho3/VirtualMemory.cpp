@@ -33,26 +33,26 @@ void VirtualMemory::allocate_process(Process process){
 // process_size - process size in bytes 
 void VirtualMemory::allocate_process(int pid, int process_size){
     
-    // tratar para nao alocar processo com o mesmo pid
     Process* check_process = find_process_VM(pid);
     if(check_process != NULL){
-        cout << "   -> PROCESS ALREADY EXISTS" << endl;
+        cout << "[INFO]: PROCESS ALREADY EXISTS" << endl;
         free(check_process);
         return;
     }
     if(total_size < process_size){
-        cout << "   -> NO SPACE AT VIRTUAL MEMORY" << endl;
+        cout << "[INFO]: NO SPACE AT VIRTUAL MEMORY" << endl;
         return;
     }
 
     Process process(pid, process_size);
+    
     if(available_size < process_size){ //Add lista de espera
-        cout << "   -> PROCESS AT WAIT LIST" << endl;
+        cout << "[INFO]: PROCESS AT WAIT LIST" << endl;
         wait_process_list.push_back(process);
         return;
     }
 
-    printf("ALLOC -> pro:%d\n",pid);
+    printf("[INFO]: ALLOC -> pro:%d\n",pid);
 
     int num_pages = (int)(process_size / page_size);
     if(process_size % page_size) num_pages++;
@@ -77,18 +77,18 @@ void VirtualMemory::allocate_process(int pid, int process_size){
 }
 
 void VirtualMemory::kill_process(int pid){
-    printf("KILL -> pro:%d\n",pid);
-    find_process_id = pid;
-    auto it = find_if(process_list.begin(), process_list.end(), find_process);
-    if (it == process_list.end()){
-        cout << "   -> PROCESS NOT FOUND" << endl;
+    printf("[INFO]: KILL -> pro:%d\n",pid);
+    Process *p = find_process_VM(pid);
+    if (p == NULL){
+        cout << "[INFO]: PROCESS NOT FOUND" << endl;
         return;
     }
-
-    Process process = *it;
+    
+    auto it = find_if(process_list.begin(), process_list.end(), find_process);
+    
     for(auto itr = primary.page_list.begin(); itr != primary.page_list.end(); itr++){
         Disc_Page page = *itr;
-        if(page.pid == process.id){
+        if(page.pid == p->id){
             primary.available_size += page_size;
             available_size += page_size;
             primary.page_list.erase(itr--);
@@ -97,12 +97,13 @@ void VirtualMemory::kill_process(int pid){
 
     for(auto itr = disc.page_list.begin(); itr != disc.page_list.end(); itr++){
         Disc_Page page = *itr;
-        if(page.pid == process.id){
+        if(page.pid == p->id){
             disc.available_size += page_size;
             available_size += page_size;
             disc.page_list.erase(itr--);
         }
     }
+
     process_list.erase(it);
     
     //mover processos do wait pra executando
@@ -129,10 +130,11 @@ Process* VirtualMemory::find_process_VM(int pid){
 void VirtualMemory::print_process(int pid){
     Process* p = find_process_VM(pid);
     if(p == NULL)
-        cout << "-> PROCESS NOT FOUND AT VM!" << endl;
-    else
-        cout << "FOUND -> pro:" << p->id << " size:"<< p->size << " pages:"<< p->page_list.size() << endl;
-
+        cout << "[INFO]: PROCESS NOT FOUND AT VM!" << endl;
+    else{
+        cout << "[INFO]: FOUND -> pro:" << p->id << " size:"<< p->size << " pages:"<< p->page_list.size() << endl;
+        free(p);
+    }
 }
 
 void VirtualMemory::command(int pid, int address){
@@ -143,16 +145,25 @@ void VirtualMemory::command(int pid, int address){
     find_page_address = num_page;
     
     // busca na lista de processos
-    auto it0 = find_if(process_list.begin(), process_list.end(), find_process);
-    
-    
-    cout << "[INFO] OPERATE -> pro:" << (*it0).id << " size:"<< (*it0).size << " pages:"<< (*it0).page_list.size() << endl; 
-    // address fora do size do processo
-    if(address >= (*it0).size){
-        cout << "[ERROR] UNABLE TO ACESS THIS address!" << endl;
+    //auto it0 = find_if(process_list.begin(), process_list.end(), find_process);
+    Process *p = find_process_VM(pid);
+
+    if(!p){
+        cout << "[ERROR] PROCESS DOESN'T EXISTS!" << endl;
         return;
     }
 
+    cout << "[INFO] OPERATE -> pro:" << p->id << " size:"<< p->size << " pages:"<< p->page_list.size() << endl; 
+
+    // address fora do size do processo
+    if(address >= p->size){
+        cout << "[ERROR] UNABLE TO ACESS THIS ADDRESS!" << endl;
+        free(p);
+        return;
+    }
+
+    free(p);
+    
     printf("[INFO] USE PAGE -> page:%d \n",num_page);
     
     // busca na memoria principal
@@ -164,9 +175,10 @@ void VirtualMemory::command(int pid, int address){
     //caso precise fazer swap
     if(it1 == primary.page_list.end()){
         cout << "[INFO] SWAPPING PAGES" << endl;
-        default_swap();
+        if (!primary.available_size)
+            default_swap();
+
         (*it2).count++;
-        
         primary.page_list.push_back(*it2);
         disc.page_list.erase(it2);
         
@@ -220,8 +232,8 @@ void VirtualMemory::swap_memory(){
 }
 
 void VirtualMemory::default_swap(){
-    swap_relogio();
-    // swap_lru();
+    //swap_relogio();
+     swap_lru();
 }
 
 void VirtualMemory::print(){
@@ -244,7 +256,7 @@ void VirtualMemory::print_process_list(vector<Process> p_list){
 }
 
 void VirtualMemory::show(){
-    cout << "Proccess List: ";
+    cout << "Process List: ";
     print_process_list(process_list);
 }
 

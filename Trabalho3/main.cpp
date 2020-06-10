@@ -4,10 +4,10 @@
 void help(){
     cout << "If you enter any unspecified command, the loop will return to input a command.\n\nCommands list and arguments::" << endl;
     cout << "(Creates a new process): C pid size" << endl;
-    cout << "(Kill a proccess by his pid): K pid" << endl;
+    cout << "(Kill a process by his pid): K pid" << endl;
     cout << "(Print Memory RAM and DISC): P" << endl;
-    cout << "(Print the list of proccess at Virtual Memory): S" << endl;
-    cout << "(List the waiting proccesses): W" << endl;
+    cout << "(Print the list of process at Virtual Memory): S" << endl;
+    cout << "(List the waiting processes): W" << endl;
     cout << "(Make an operation of R/W or I/O at process address): O pid adress" << endl;
     cout << "(Print information about a process): F pid" << endl;
     cout << "(Show help): H" << endl;
@@ -69,6 +69,7 @@ int main(){
                 break;
 
             case 'E':
+                cout << "\nEND OF OPERATION\n";
                 return 0;
 
             default:
