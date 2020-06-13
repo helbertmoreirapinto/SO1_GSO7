@@ -15,7 +15,8 @@ bool compare_process(Process a, Process b) {
 VirtualMemory::VirtualMemory(int page_size){
     this->page_size = page_size;
     this->total_size = this->available_size = MEM_DISC + MEM_RAM;
-    
+    this->std_swap_type = 0;
+
     this->primary.available_size = MEM_RAM;
     this->disc.available_size = MEM_DISC;
 }
@@ -58,7 +59,7 @@ void VirtualMemory::allocate_process(int pid, int process_size){
         process.page_list.push_back(page);
 
         if(!primary.available_size)
-            default_swap();
+            standard_swap_algorithm();
         
         primary.page_list.insert(primary.page_list.begin()+idx_queue, page);
         idx_queue = (idx_queue+1 < MEM_RAM/page_size) ? idx_queue+1 : 0;
@@ -168,7 +169,6 @@ void VirtualMemory::command(int pid, int address){
         free(p);
         return;
     }
-
     free(p);
     
     printf("[INFO] USE PAGE -> page:%d \n",num_page);
@@ -183,7 +183,7 @@ void VirtualMemory::command(int pid, int address){
     if(it1 == primary.page_list.end()){
         cout << "[INFO] SWAPPING PAGES" << endl;
         if (!primary.available_size)
-            default_swap();
+            standard_swap_algorithm();
 
         (*it2).count++;
         primary.page_list.push_back(*it2);
@@ -238,18 +238,21 @@ void VirtualMemory::swap_memory(){
     disc.available_size -= page_size;
 }
 
-void VirtualMemory::default_swap(){
-    //swap_relogio();
-     swap_lru();
+void VirtualMemory::standard_swap_algorithm(){
+    if(std_swap_type == SWAP_LRU){
+        swap_lru();
+    }else if(std_swap_type == SWAP_CLOCK){
+        swap_relogio();
+    }
 }
 
 void VirtualMemory::print(){
     cout << "----------------------------------------" << endl << "RAM" << endl;
-    primary.print();
+    primary.print(std_swap_type, idx_queue);
     cout << endl;
 
     cout << "DISC" << endl;
-    disc.print();
+    disc.print(std_swap_type, idx_queue);
     cout << "----------------------------------------" << endl;
     cout << endl;
 }

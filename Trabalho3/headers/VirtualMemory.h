@@ -9,6 +9,7 @@ public:
     int total_size;
     int page_size;
     int available_size;
+    int std_swap_type;
 
     Memory primary;
     Memory disc;
@@ -24,6 +25,7 @@ public:
     void command(int pid, int adress);
     void print_process(int pid);
     void print_wait_list();
+    void standard_swap_algorithm();
     void print();
     void show();
 

@@ -14,16 +14,17 @@ void help(){
     cout << "(Exit the simulator): E" << endl;
 }
 
-
 int main(){
-    cout << "RAM:" << MEM_RAM << endl;
-    cout << "DISCO:" << MEM_DISC << endl;
-
-    int size_pag = 8;
-    cout << "Page size: " << size_pag << endl;
+    int size_pag = 4;
+    printf("RAM: %02d \t DISCO: %02d\n", MEM_DISC, MEM_DISC);
+    cout << "Page size: " << size_pag << endl << endl;
     //cin >> size_pag;
-
+    
     VirtualMemory vm(size_pag);
+
+    printf("LRU: %02d \t Clock: %02d\n", SWAP_LRU, SWAP_CLOCK);
+    printf("Select swap algorithm: ");
+    cin >> vm.std_swap_type;
 
     do{
         int pid, size;
