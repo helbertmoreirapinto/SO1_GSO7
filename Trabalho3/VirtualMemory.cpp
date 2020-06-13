@@ -1,13 +1,8 @@
 #include "headers/VirtualMemory.h"
 
-int find_process_id = 0;
 int find_page_pid = 0;
 int find_page_address = 0;
 static int idx_queue = 0;
-
-bool find_process(Process process) {
-  return process.id == find_process_id;
-}
 
 bool find_page(Disc_Page page) {
   return page.pid == find_page_pid && page.address == find_page_address;
@@ -83,8 +78,13 @@ void VirtualMemory::kill_process(int pid){
         cout << "[INFO]: PROCESS NOT FOUND" << endl;
         return;
     }
-    
-    auto it = find_if(process_list.begin(), process_list.end(), find_process);
+
+    auto it = process_list.begin();
+    while(it != process_list.end()){
+        if((*it).id == pid)
+            break;
+        it++;
+    }
     
     for(auto itr = primary.page_list.begin(); itr != primary.page_list.end(); itr++){
         Disc_Page page = *itr;
@@ -103,21 +103,29 @@ void VirtualMemory::kill_process(int pid){
             disc.page_list.erase(itr--);
         }
     }
+    
+    cout << "avail : " << available_size<< endl;
 
     process_list.erase(it);
     
     //mover processos do wait pra executando
-    for(Process new_process : wait_process_list){
-        if(new_process.size >= available_size)
+    for(auto n_it = wait_process_list.begin(); n_it != wait_process_list.end(); n_it++){
+        if((*n_it).size > available_size)
             break;
-        allocate_process(new_process);
+        allocate_process(*n_it);
+        wait_process_list.erase(n_it);
+        n_it--;
     }
 }
 
 Process* VirtualMemory::find_process_VM(int pid){
     Process* p = new Process;
-    find_process_id = pid;
-    auto it = find_if(process_list.begin(), process_list.end(), find_process);
+    auto it = process_list.begin();
+    while(it != process_list.end()){
+        if((*it).id == pid)
+            break;
+        it++;
+    }
     if(it == process_list.end())
         return NULL;
     p->id = (*it).id;
@@ -140,7 +148,6 @@ void VirtualMemory::print_process(int pid){
 void VirtualMemory::command(int pid, int address){
     //ver qual pagina esta address
     int num_page = address / page_size;
-    find_process_id = pid;
     find_page_pid = pid;
     find_page_address = num_page;
     

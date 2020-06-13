@@ -69,7 +69,7 @@ int main(){
                 break;
 
             case 'E':
-                cout << "\nEND OF OPERATION\n";
+                cout << "END OF OPERATION\n";
                 return 0;
 
             default:
