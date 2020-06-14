@@ -1,12 +1,6 @@
 #include "headers/VirtualMemory.h"
 
-int find_page_pid = 0;
-int find_page_address = 0;
 static int idx_queue = 0;
-
-bool find_page(Disc_Page page) {
-  return page.pid == find_page_pid && page.address == find_page_address;
-}
 
 bool compare_process(Process a, Process b) {
   return a.id < b.id;
@@ -77,6 +71,7 @@ void VirtualMemory::kill_process(int pid){
     Process *p = find_process_VM(pid);
     if (p == NULL){
         cout << "[INFO]: PROCESS NOT FOUND" << endl;
+        free(p);
         return;
     }
 
@@ -87,6 +82,11 @@ void VirtualMemory::kill_process(int pid){
         it++;
     }
     
+    for(;idx_queue >= 0;idx_queue--){
+        if(primary.page_list[idx_queue].pid != pid)
+            break;
+    }
+
     for(auto itr = primary.page_list.begin(); itr != primary.page_list.end(); itr++){
         Disc_Page page = *itr;
         if(page.pid == p->id){
@@ -104,8 +104,6 @@ void VirtualMemory::kill_process(int pid){
             disc.page_list.erase(itr--);
         }
     }
-    
-    cout << "avail : " << available_size<< endl;
 
     process_list.erase(it);
     
@@ -149,11 +147,8 @@ void VirtualMemory::print_process(int pid){
 void VirtualMemory::command(int pid, int address){
     //ver qual pagina esta address
     int num_page = address / page_size;
-    find_page_pid = pid;
-    find_page_address = num_page;
     
     // busca na lista de processos
-    //auto it0 = find_if(process_list.begin(), process_list.end(), find_process);
     Process *p = find_process_VM(pid);
 
     if(!p){
@@ -171,19 +166,27 @@ void VirtualMemory::command(int pid, int address){
     }
     free(p);
     
-    printf("[INFO] USE PAGE -> page:%d \n",num_page);
-    
+    printf("[INFO] USE PAGE -> page:%d \n", num_page);
+
     // busca na memoria principal
-    auto it1 = find_if(primary.page_list.begin(), primary.page_list.end(), find_page);
-    
-    // busca na memoria secundaria
-    auto it2 = find_if(disc.page_list.begin(), disc.page_list.end(), find_page);
+    auto it1 = primary.page_list.begin();
+    for(;it1 != primary.page_list.end(); it1++){
+        if((*it1).pid == pid && (*it1).address == num_page)
+            break;
+    }
 
     //caso precise fazer swap
     if(it1 == primary.page_list.end()){
         cout << "[INFO] SWAPPING PAGES" << endl;
         if (!primary.available_size)
             standard_swap_algorithm();
+        
+        // busca na memoria secundaria
+        auto it2 = disc.page_list.begin();
+        for(;it2 != disc.page_list.end(); it2++){
+            if((*it2).pid == pid && (*it2).address == num_page)
+                break;
+        }
 
         (*it2).count++;
         primary.page_list.push_back(*it2);
@@ -248,29 +251,34 @@ void VirtualMemory::standard_swap_algorithm(){
 
 void VirtualMemory::print(){
     cout << "----------------------------------------" << endl << "RAM" << endl;
-    primary.print(std_swap_type, idx_queue);
+    int idx_print = (std_swap_type == SWAP_CLOCK) ? idx_queue : -1;
+    primary.print(std_swap_type, idx_print);
     cout << endl;
 
     cout << "DISC" << endl;
-    disc.print(std_swap_type, idx_queue);
+    disc.print(std_swap_type, -1);
     cout << "----------------------------------------" << endl;
     cout << endl;
 }
 
-void VirtualMemory::print_process_list(vector<Process> p_list){
+void VirtualMemory::print_process_list(vector<Process> p_list, bool print_pages){
     if(p_list.empty())
         cout << "Empty";
-    for(Process p : p_list)
-        cout << "(ID: " << p.id << ", size: " << p.size << ", pages:" << p.page_list.size() << ") ";
+    for(Process p : p_list){
+        cout << "(ID: " << p.id << ", size: " << p.size;
+        if(print_pages)
+            cout << ", pages:" << p.page_list.size();
+        cout << ") ";
+    }
     cout << endl;
 }
 
 void VirtualMemory::show(){
     cout << "Process List: ";
-    print_process_list(process_list);
+    print_process_list(process_list, true);
 }
 
 void VirtualMemory::print_wait_list(){
     cout << "Wait List: ";
-    print_process_list(wait_process_list);
+    print_process_list(wait_process_list, false);
 }
