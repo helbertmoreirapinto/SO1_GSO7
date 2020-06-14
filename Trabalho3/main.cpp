@@ -15,6 +15,13 @@ void help(){
 }
 
 int main(){
+    ifstream file("scrpt_files/input.txt");
+    
+    //Use file as input, otherwise use standard input
+    if(file.is_open()){
+        cin.rdbuf(file.rdbuf());
+    }
+
     int size_pag = 4;
     printf("RAM: %02d \t DISCO: %02d\n", MEM_DISC, MEM_DISC);
     cout << "Page size: " << size_pag << endl << endl;
@@ -25,7 +32,7 @@ int main(){
     printf("LRU: %02d \t Clock: %02d\n", SWAP_LRU, SWAP_CLOCK);
     printf("Select swap algorithm: ");
     cin >> vm.std_swap_type;
-
+    
     do{
         int pid, size;
         char command;
@@ -71,6 +78,7 @@ int main(){
 
             case 'E':
                 cout << "END OF OPERATION\n";
+                file.close();
                 return 0;
 
             default:

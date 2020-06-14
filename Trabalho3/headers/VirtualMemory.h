@@ -31,7 +31,7 @@ public:
 
 private:
     Process* find_process_VM(int pid);
-    void print_process_list(vector<Process> p_list, bool print_pagesW);
+    void print_process_list(vector<Process> p_list, bool print_pages);
     void default_swap();
     void swap_relogio();
     void swap_memory();
