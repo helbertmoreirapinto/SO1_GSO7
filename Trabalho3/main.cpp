@@ -46,11 +46,11 @@ int main(){
                 break;
             
             case 'P':
-                vm.print();
+                vm.print_mem();
                 break;
             
             case 'S':
-                vm.show();
+                vm.print_allocated_list();
                 break;
             
             case 'W':

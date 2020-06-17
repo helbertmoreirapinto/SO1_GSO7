@@ -16,13 +16,8 @@ Disc_Page::Disc_Page(int address, int pid, int size){
     memset(info, -1, sizeof(info));
 }
 
+// standard disc page initialization
 Disc_Page::Disc_Page(){
     address = pid = size = count = 0;
     R = false;
 }
-
-/*
-Disc_Page::~Disc_Page(){
-    free(info);
-}
-*/

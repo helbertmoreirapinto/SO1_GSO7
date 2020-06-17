@@ -6,6 +6,7 @@ bool compare_process(Process a, Process b) {
   return a.id < b.id;
 }
 
+// page_size - virtual page size
 VirtualMemory::VirtualMemory(int page_size){
     this->page_size = page_size;
     this->total_size = this->available_size = MEM_DISC + MEM_RAM;
@@ -15,6 +16,7 @@ VirtualMemory::VirtualMemory(int page_size){
     this->disc.available_size = MEM_DISC;
 }
 
+// process - allocate a process
 void VirtualMemory::allocate_process(Process process){
     allocate_process(process.id, process.size);
 }
@@ -66,6 +68,7 @@ void VirtualMemory::allocate_process(int pid, int process_size){
     sort(process_list.begin(), process_list.end(), compare_process);
 }
 
+// pid - process identifier
 void VirtualMemory::kill_process(int pid){
     printf("[INFO]: KILL -> pro:%d\n",pid);
     Process *p = find_process_VM(pid);
@@ -117,6 +120,7 @@ void VirtualMemory::kill_process(int pid){
     }
 }
 
+// pid - process identifier
 Process* VirtualMemory::find_process_VM(int pid){
     Process* p = new Process;
     auto it = process_list.begin();
@@ -134,6 +138,7 @@ Process* VirtualMemory::find_process_VM(int pid){
     return p;
 }
 
+// pid - process identifier
 void VirtualMemory::print_process(int pid){
     Process* p = find_process_VM(pid);
     if(p == NULL)
@@ -144,6 +149,8 @@ void VirtualMemory::print_process(int pid){
     }
 }
 
+// pid - process identifier
+// adress - process page number
 void VirtualMemory::command(int pid, int address){
     //ver qual pagina esta address
     int num_page = address / page_size;
@@ -207,12 +214,14 @@ void VirtualMemory::command(int pid, int address){
     cout << "[INFO] END OF OPERATION = SUCCESS" << endl;
 }
 
+// use swap fifo
 void VirtualMemory::swap_fifo(){
     disc.page_list.push_back(primary.page_list.front());
     primary.page_list.erase(primary.page_list.begin());
     swap_memory();
 }
 
+// use swap lru
 void VirtualMemory::swap_lru(){
     auto it_swap = primary.page_list.begin();
     for(auto it = primary.page_list.begin(); it != primary.page_list.end(); it++){
@@ -226,7 +235,8 @@ void VirtualMemory::swap_lru(){
     swap_memory();
 }
 
-void VirtualMemory::swap_relogio(){
+// use swap clock
+void VirtualMemory::swap_clock(){
     while(primary.page_list[idx_queue].R){
         primary.page_list[idx_queue].R = false;
         idx_queue = ((idx_queue+1) < primary.page_list.size()) ? idx_queue+1 : 0;
@@ -236,20 +246,23 @@ void VirtualMemory::swap_relogio(){
     swap_memory();
 }
 
+// default swap in size memory
 void VirtualMemory::swap_memory(){
     primary.available_size += page_size;
     disc.available_size -= page_size;
 }
 
+// select swap
 void VirtualMemory::standard_swap_algorithm(){
     if(std_swap_type == SWAP_LRU){
         swap_lru();
     }else if(std_swap_type == SWAP_CLOCK){
-        swap_relogio();
+        swap_clock();
     }
 }
 
-void VirtualMemory::print(){
+// print virtual memory
+void VirtualMemory::print_mem(){
     cout << "----------------------------------------" << endl << "RAM" << endl;
     int idx_print = (std_swap_type == SWAP_CLOCK) ? idx_queue : -1;
     primary.print(std_swap_type, idx_print);
@@ -261,6 +274,8 @@ void VirtualMemory::print(){
     cout << endl;
 }
 
+// p_list - list of process pages
+// print_pages - true if pages are allocated
 void VirtualMemory::print_process_list(vector<Process> p_list, bool print_pages){
     if(p_list.empty())
         cout << "Empty";
@@ -273,12 +288,14 @@ void VirtualMemory::print_process_list(vector<Process> p_list, bool print_pages)
     cout << endl;
 }
 
-void VirtualMemory::show(){
-    cout << "Process List: ";
-    print_process_list(process_list, true);
-}
-
+// print list of waiting processes
 void VirtualMemory::print_wait_list(){
     cout << "Wait List: ";
     print_process_list(wait_process_list, false);
+}
+
+// print list of allocated processes
+void VirtualMemory::print_allocated_list(){
+    cout << "Process List: ";
+    print_process_list(process_list, true);
 }

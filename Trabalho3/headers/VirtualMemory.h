@@ -26,14 +26,14 @@ public:
     void print_process(int pid);
     void print_wait_list();
     void standard_swap_algorithm();
-    void print();
-    void show();
+    void print_mem();
+    void print_allocated_list();
 
 private:
     Process* find_process_VM(int pid);
     void print_process_list(vector<Process> p_list, bool print_pages);
     void default_swap();
-    void swap_relogio();
+    void swap_clock();
     void swap_memory();
     void swap_fifo();
     void swap_lru();

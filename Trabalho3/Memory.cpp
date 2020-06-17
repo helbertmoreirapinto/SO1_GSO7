@@ -1,13 +1,17 @@
 #include "headers/Memory.h"
 
+// available_size - available memory size
 Memory::Memory(int available_size){
     this->available_size = available_size;
 }
 
+// standard memory initialization
 Memory::Memory(){
     this->available_size = 0;
 }
 
+// type - swap type used
+// clock_pos - if the swap type is clock it prints the watch hand, otherwise it just ignores
 void Memory::print(int type, int clock_pos){
     if(page_list.empty()){
         cout << "Empty" << endl;
