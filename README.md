@@ -83,7 +83,7 @@ Trabalhos da disciplina de Sistemas Operacionais 1
 	
 	Deve ser escolhido o tamanho das páginas, o padrão está definito para 4 bytes.
 	
-	Em seguida deve ser escolhido o algoritmo de substituição de páginas.
+	Em seguida deve ser escolhido o algoritmo de substituição de páginas (de acordo com o que fooi explicado no video de apresentação):
 	LRU: 01
 	Clock: 02
 
