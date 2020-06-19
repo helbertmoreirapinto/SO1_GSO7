@@ -80,6 +80,18 @@ Trabalhos da disciplina de Sistemas Operacionais 1
 	Para compilar:
 	g++ *.cpp -o main<br/>
 	./main <br/>
+
+
+	Comandos aceitos pelo simulador:" << endl;
+    C: cria um novo processo
+    K: termina um processo
+    P: imprime a situação atual da memória ram e o disco
+    S: imprime a lista de processos na memória virtual
+    W: imprime a lista de processos em espera
+    O: faz uma ooperação de leitura/escrita ou entrada/saída de um processo
+    F: imprime as informações sobre um processoo
+    H: imprime uma lista de ajuda em relação aos comandos
+    E: sai do simulador
 </p>
 <p>
 	
