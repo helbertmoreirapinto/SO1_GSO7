@@ -87,7 +87,6 @@ Trabalhos da disciplina de Sistemas Operacionais 1
 	LRU: 01
 	Clock: 02
 
-
 	Para as operações com os processos, são aceitos os comandos:
     C: cria um novo processo
     K: termina um processo
