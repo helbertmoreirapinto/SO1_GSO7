@@ -80,9 +80,15 @@ Trabalhos da disciplina de Sistemas Operacionais 1
 	Para compilar:
 	g++ *.cpp -o main<br/>
 	./main <br/>
+	
+	Deve ser escolhido o tamanho das páginas, o padrão está definito para 4 bytes.
+	
+	Em seguida deve ser escolhido o algoritmo de substituição de páginas.
+	LRU: 01
+	Clock: 02
 
 
-	Comandos aceitos pelo simulador:" << endl;
+	Para as operações com os processos, são aceitos os comandos:
     C: cria um novo processo
     K: termina um processo
     P: imprime a situação atual da memória ram e o disco
