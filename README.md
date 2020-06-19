@@ -74,7 +74,7 @@ Trabalhos da disciplina de Sistemas Operacionais 1
 <br/>
 
 <h1>TRABALHO III</h1>
-<h3>Simulador de memória virtual com paginação</h3>
+<h3>Simulador de gerenciamento de memória virtual com paginação</h3>
 <a href = "https://www.youtube.com/watch?v=iwPrGIO2NL0&t=1151s">Link video trabalho 3</a>
 <p>
 	Para compilar:
